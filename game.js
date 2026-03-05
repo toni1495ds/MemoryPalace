@@ -7,7 +7,7 @@ const SCALE = 2,
   P_SIZE = 14,
   INTERACT_D = 38;
 const MAP_W = 1280,
-  MAP_H = 1024;
+  MAP_H = 2000;
 
 const PALETTE = [
   { bg: "#0d1f3c", wall: "#2050a0", label: "Azul" },
@@ -817,19 +817,10 @@ function updatePlayer() {
   if (keys["ArrowRight"] || dpKeys.right) dx += SPEED;
   if (keys["ArrowUp"] || dpKeys.up) dy -= SPEED;
   if (keys["ArrowDown"] || dpKeys.down) dy += SPEED;
-  const nx = Math.max(0, Math.min(MAP_W, player.x + dx));
-  const ny = Math.max(0, Math.min(MAP_H, player.y + dy));
-  const inR = roomAt(nx, ny);
-  if (inR) {
-    player.x = nx;
-    player.y = ny;
-    curRoomName = inR.name;
-  } else {
-    if (roomAt(nx, player.y)) player.x = nx;
-    if (roomAt(player.x, ny)) player.y = ny;
-    const cr = roomAt(player.x, player.y);
-    if (cr) curRoomName = cr.name;
-  }
+  player.x = Math.max(0, Math.min(MAP_W, player.x + dx));
+  player.y = Math.max(0, Math.min(MAP_H, player.y + dy));
+  const cr = roomAt(player.x, player.y);
+  if (cr) curRoomName = cr.name;
   let best = null,
     bestD = INTERACT_D;
   for (const m of memories) {
