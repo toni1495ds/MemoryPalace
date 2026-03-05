@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+
     <!-- ═══════════ INTRO ═══════════ -->
     <div class="screen" id="intro">
       <div class="fire-icon">🔥</div>
@@ -17,38 +18,36 @@
         i ancora els teus apunts a cada racó.
       </p>
       <div class="intro-btns">
-        <button class="btn-primary" onclick="startGame(false)">
-          🏠 CONSTRUIR EL MEU PIS
-        </button>
-        <button class="btn-secondary" onclick="startGame(true)">
-          ▶ Usar pis d'exemple
-        </button>
+        <button class="btn-primary" onclick="startGame(false)">🏠 CONSTRUIR EL MEU PIS</button>
+        <button class="btn-secondary" onclick="startGame(true)">▶ Usar pis d'exemple</button>
       </div>
     </div>
 
     <!-- ═══════════ GAME ═══════════ -->
     <div class="screen hidden" id="game">
+
       <!-- HUD -->
       <div id="hud">
         <span class="hud-title" onclick="goToMenu()" style="cursor:pointer;" title="Tornar al menú">🔥 PALAU</span>
         <div class="hud-sep"></div>
         <span class="hud-info">Sala: <span id="hud-room">—</span></span>
         <div class="hud-sep"></div>
-        <span class="hud-info"
-          >Memòries:
-          <span id="hud-count" style="color: var(--gold)">0</span></span
-        >
+        <span class="hud-info">Memòries: <span id="hud-count" style="color:var(--gold)">0</span></span>
         <div class="hud-right">
-          <button
-            class="btn-hud btn-hud-blue"
-            id="btn-build"
-            onclick="toggleBuilder()"
-          >
-            🏗 CONSTRUIR
-          </button>
-          <button class="btn-hud btn-hud-fire" onclick="toggleEditor()">
-            ✏ MEMÒRIES
-          </button>
+          <!-- Zoom -->
+          <button class="btn-hud btn-hud-dim" onclick="zoomOut()" title="Allunyar (-)">－</button>
+          <button class="btn-hud btn-hud-dim" onclick="zoomReset()" title="Zoom 100% (0)">⊙</button>
+          <button class="btn-hud btn-hud-dim" onclick="zoomIn()"  title="Apropar (+)">＋</button>
+          <div class="hud-sep"></div>
+          <!-- Export / Import -->
+          <button class="btn-hud btn-hud-green" onclick="exportPalace()" title="Exportar còpia de seguretat">💾</button>
+          <button class="btn-hud btn-hud-green" onclick="importPalace()" title="Importar palau">📂</button>
+          <div class="hud-sep"></div>
+          <!-- Quiz -->
+          <button class="btn-hud btn-hud-gold" onclick="startQuiz()">🧠 REPÀS</button>
+          <div class="hud-sep"></div>
+          <button class="btn-hud btn-hud-blue" id="btn-build" onclick="toggleBuilder()">🏗 CONSTRUIR</button>
+          <button class="btn-hud btn-hud-fire" onclick="toggleEditor()">✏ MEMÒRIES</button>
         </div>
       </div>
 
@@ -61,96 +60,36 @@
       <div id="builder-bar">
         <span class="bbar-label">🏗 CONSTRUCTOR</span>
         <div class="bbar-sep"></div>
-
-        <!-- Tool buttons -->
-        <button
-          class="bbar-btn draw active"
-          id="tool-draw"
-          onclick="setTool('draw')"
-        >
-          ✦ DIBUIXAR
-        </button>
-        <button
-          class="bbar-btn furn"
-          id="tool-furniture"
-          onclick="setTool('furniture')"
-        >
-          🪑 MOBLE
-        </button>
-        <button
-          class="bbar-btn movemem"
-          id="tool-movemem"
-          onclick="setTool('movemem')"
-        >
-          ✥ MOURE MEM.
-        </button>
-        <button
-          class="bbar-btn erase"
-          id="tool-erase"
-          onclick="setTool('erase')"
-        >
-          ✕ ESBORRAR
-        </button>
-        <button class="bbar-btn rename" onclick="renameSelected()">
-          ✏ RENOMBRAR
-        </button>
-
+        <button class="bbar-btn draw active" id="tool-draw"      onclick="setTool('draw')">✦ DIBUIXAR</button>
+        <button class="bbar-btn furn"        id="tool-furniture" onclick="setTool('furniture')">🪑 MOBLE</button>
+        <button class="bbar-btn movemem"     id="tool-movemem"   onclick="setTool('movemem')">✥ MOURE MEM.</button>
+        <button class="bbar-btn erase"       id="tool-erase"     onclick="setTool('erase')">✕ ESBORRAR</button>
+        <button class="bbar-btn rename"                          onclick="renameSelected()">✏ RENOMBRAR</button>
         <div class="bbar-sep"></div>
-
-        <!-- Color swatches (for draw tool) -->
         <div class="color-swatches" id="swatches"></div>
-
-        <!-- Furniture picker (shown when furniture tool active) -->
-        <div id="furniture-picker" style="display: none"></div>
-
-        <span class="bbar-hint"
-          >Arrossega per dibuixar · Click per seleccionar</span
-        >
+        <div id="furniture-picker" style="display:none"></div>
+        <span class="bbar-hint">Arrossega per dibuixar · Scroll per zoom</span>
       </div>
 
       <!-- D-pad controls -->
       <div id="controls-bar">
         <div class="dpad">
           <div class="empty"></div>
-          <button
-            id="btn-up"
-            onpointerdown="dp('up',1)"
-            onpointerup="dp('up',0)"
-          >
-            ▲
-          </button>
+          <button id="btn-up"    onpointerdown="dp('up',1)"    onpointerup="dp('up',0)">▲</button>
           <div class="empty"></div>
-          <button
-            id="btn-left"
-            onpointerdown="dp('left',1)"
-            onpointerup="dp('left',0)"
-          >
-            ◀
-          </button>
+          <button id="btn-left"  onpointerdown="dp('left',1)"  onpointerup="dp('left',0)">◀</button>
           <div class="empty"></div>
-          <button
-            id="btn-right"
-            onpointerdown="dp('right',1)"
-            onpointerup="dp('right',0)"
-          >
-            ▶
-          </button>
+          <button id="btn-right" onpointerdown="dp('right',1)" onpointerup="dp('right',0)">▶</button>
           <div class="empty"></div>
-          <button
-            id="btn-down"
-            onpointerdown="dp('down',1)"
-            onpointerup="dp('down',0)"
-          >
-            ▼
-          </button>
+          <button id="btn-down"  onpointerdown="dp('down',1)"  onpointerup="dp('down',0)">▼</button>
           <div class="empty"></div>
         </div>
         <div class="hint">
           <kbd>↑↓←→</kbd> Moure &nbsp;·&nbsp; <kbd>E</kbd> Interactuar<br />
-          Apropa't als objectes brillants ✦<br />
-          <kbd>🏗 CONSTRUIR</kbd> per editar el teu pis
+          <kbd>+</kbd><kbd>-</kbd> Zoom &nbsp;·&nbsp; <kbd>Scroll</kbd> Zoom ràpid<br />
+          Apropa't als objectes brillants ✦
         </div>
-        <div style="width: 110px"></div>
+        <div style="width:110px"></div>
       </div>
 
       <!-- Memory popup -->
@@ -168,21 +107,12 @@
       <div id="editor-panel">
         <div class="ep-head">
           <h2>✏ MEMÒRIES</h2>
-          <button
-            class="btn-secondary"
-            onclick="toggleEditor()"
-            style="padding: 3px 9px; font-size: 9px"
-          >
-            ✕
-          </button>
+          <button class="btn-secondary" onclick="toggleEditor()" style="padding:3px 9px;font-size:9px;">✕</button>
         </div>
         <div class="ep-body" id="ep-list"></div>
         <div class="ep-add">
           <h3>+ Nova memòria</h3>
-          <div class="frow">
-            <label>Habitació</label>
-            <select id="f-room"></select>
-          </div>
+          <div class="frow"><label>Habitació</label><select id="f-room"></select></div>
           <div class="frow">
             <label>Categoria</label>
             <select id="f-cat">
@@ -192,21 +122,9 @@
               <option value="temario">📚 Temari</option>
             </select>
           </div>
-          <div class="frow">
-            <label>Títol</label>
-            <input id="f-title" type="text" placeholder="Ex: Art. 23 LPRL" />
-          </div>
-          <div class="frow">
-            <label>Contingut</label>
-            <textarea id="f-body" placeholder="Escriu el teu apunt…"></textarea>
-          </div>
-          <button
-            class="btn-primary"
-            style="width: 100%; font-size: 10px; padding: 8px"
-            onclick="addMemory()"
-          >
-            AFEGIR MEMÒRIA
-          </button>
+          <div class="frow"><label>Títol</label><input id="f-title" type="text" placeholder="Ex: Art. 23 LPRL" /></div>
+          <div class="frow"><label>Contingut</label><textarea id="f-body" placeholder="Escriu el teu apunt…"></textarea></div>
+          <button class="btn-primary" style="width:100%;font-size:10px;padding:8px;" onclick="addMemory()">AFEGIR MEMÒRIA</button>
         </div>
       </div>
 
@@ -214,30 +132,45 @@
       <div id="room-modal">
         <div class="rmodal-box">
           <h3>✏ NOM DE L'HABITACIÓ</h3>
-          <input
-            id="modal-input"
-            type="text"
-            placeholder="Saló, Dormitori, Cuina…"
-            maxlength="24"
-          />
+          <input id="modal-input" type="text" placeholder="Saló, Dormitori, Cuina…" maxlength="24" />
           <div class="rmodal-btns">
-            <button class="btn-secondary" onclick="closeRoomModal()">
-              Cancel·lar
-            </button>
-            <button
-              class="btn-primary"
-              style="padding: 8px 20px; font-size: 11px"
-              onclick="confirmRoomName()"
-            >
-              Desar
-            </button>
+            <button class="btn-secondary" onclick="closeRoomModal()">Cancel·lar</button>
+            <button class="btn-primary" style="padding:8px 20px;font-size:11px;" onclick="confirmRoomName()">Desar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════ QUIZ OVERLAY ═══════════ -->
+      <div id="quiz-overlay">
+        <div id="quiz-box">
+          <div id="quiz-header">
+            <span id="quiz-progress" class="quiz-progress">0 / 0</span>
+            <span class="quiz-title">🧠 MODE REPÀS</span>
+            <button class="mclose" onclick="closeQuiz()" style="position:relative;top:0;right:0;">✕</button>
+          </div>
+
+          <div id="quiz-room"></div>
+          <div id="quiz-cat" class="quiz-cat"></div>
+
+          <div id="quiz-question"></div>
+
+          <div id="quiz-answer"></div>
+
+          <div class="quiz-actions">
+            <button id="quiz-show-btn"  class="btn-primary"  onclick="showQuizAnswer()" style="font-size:11px;padding:9px 28px;">👁 Veure resposta</button>
+
+            <div id="quiz-result-btns" style="display:none">
+              <button class="btn-quiz-wrong" onclick="quizResult(false)">✕ No ho sabia</button>
+              <button class="btn-quiz-right" onclick="quizResult(true)">✓ Ho sabia!</button>
+            </div>
+
+            <button id="quiz-end-btn" class="btn-primary" onclick="closeQuiz()" style="display:none;font-size:11px;padding:9px 28px;">Tancar</button>
           </div>
         </div>
       </div>
 
       <div id="notif"></div>
-    </div>
-    <!-- /game -->
+    </div><!-- /game -->
 
     <script src="game.js"></script>
   </body>
