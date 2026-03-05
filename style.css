@@ -105,14 +105,16 @@ canvas#gc { display:block; }
 
 /* BUILDER BAR */
 #builder-bar {
-  position:absolute; bottom:108px; left:0; right:0; height:52px;
+  position:absolute; bottom:108px; left:0; right:0;
   background:rgba(4,7,18,.99); border-top:1px solid rgba(255,200,0,.2);
   border-bottom:1px solid rgba(80,160,255,.1);
-  display:none; align-items:center; padding:0 14px; gap:9px; z-index:90; overflow-x:auto;
+  display:none; flex-direction:column; justify-content:center;
+  padding:6px 14px; gap:6px; z-index:90;
 }
 #builder-bar.visible { display:flex; }
-#builder-bar::-webkit-scrollbar { height:2px; }
-#builder-bar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); }
+.bbar-top { display:flex; align-items:center; gap:9px; flex-wrap:nowrap; overflow-x:auto; }
+.bbar-top::-webkit-scrollbar { height:2px; }
+.bbar-top::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); }
 
 .bbar-label { font-family:'Orbitron',monospace; font-size:9px; letter-spacing:2px; color:var(--gold); white-space:nowrap; flex-shrink:0; }
 .bbar-sep   { width:1px; height:28px; background:rgba(255,255,255,.09); flex-shrink:0; }
@@ -135,10 +137,15 @@ canvas#gc { display:block; }
 .color-swatches { display:flex; gap:5px; align-items:center; flex-shrink:0; }
 .swatch { width:16px; height:16px; border-radius:3px; cursor:pointer; border:2px solid transparent; transition:all .13s; flex-shrink:0; }
 .swatch.selected { border-color:#fff; transform:scale(1.25); }
-.bbar-hint { font-family:'Share Tech Mono',monospace; font-size:9px; color:rgba(255,200,80,.35); margin-left:auto; white-space:nowrap; flex-shrink:0; }
-
 /* FURNITURE PICKER */
-#furniture-picker { display:flex; gap:5px; align-items:center; flex-shrink:0; }
+#furniture-picker { display:flex; flex-direction:column; gap:4px; width:100%; }
+.furn-row { display:flex; align-items:center; gap:4px; flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; }
+.furn-row::-webkit-scrollbar { display:none; }
+.furn-group-label {
+  font-family:'Share Tech Mono',monospace; font-size:8px; color:rgba(255,200,80,.4);
+  letter-spacing:1px; text-transform:uppercase; white-space:nowrap;
+  padding:0 4px 0 6px; flex-shrink:0;
+}
 .furn-chip {
   width:30px; height:30px; background:rgba(255,200,80,.1); border:1px solid rgba(255,200,80,.2);
   border-radius:5px; display:flex; align-items:center; justify-content:center;
@@ -283,6 +290,15 @@ canvas#gc { display:block; }
   background:rgba(255,140,0,.13); border:1px solid rgba(255,140,0,.38);
   color:var(--ember); padding:6px 16px; font-family:'Share Tech Mono',monospace;
   font-size:10px; letter-spacing:1px; border-radius:4px; opacity:0;
-  transition:opacity .26s,transform .26s; z-index:300; pointer-events:none; white-space:nowrap;
+  transition:opacity .26s,transform .26s; z-index:300; pointer-events:none;
+  white-space:nowrap; display:flex; align-items:center; gap:10px;
 }
 #notif.show { opacity:1; transform:translateX(0); }
+#notif.has-undo { pointer-events:auto; }
+#notif .undo-btn {
+  padding:2px 9px; background:rgba(255,140,0,.22);
+  border:1px solid rgba(255,140,0,.55); color:var(--ember);
+  font-family:inherit; font-size:10px; letter-spacing:1px;
+  border-radius:3px; cursor:pointer; transition:background .15s;
+}
+#notif .undo-btn:hover { background:rgba(255,140,0,.45); }

@@ -23,16 +23,38 @@ const CAT = {
 };
 
 const FURNITURE = {
-  sofa:     { label:'Sofà',        emoji:'🛋', w:60, h:28, base:'#3a2a6a', accent:'#5a4a9a' },
-  bed:      { label:'Llit',        emoji:'🛏', w:60, h:50, base:'#2a4a2a', accent:'#4a8a4a' },
-  table:    { label:'Taula',       emoji:'🪑', w:40, h:40, base:'#4a3a1a', accent:'#8a6a2a' },
-  desk:     { label:'Escriptori',  emoji:'🖥', w:50, h:28, base:'#1a3a4a', accent:'#2a6a8a' },
-  fridge:   { label:'Nevera',      emoji:'🧊', w:24, h:30, base:'#2a4a5a', accent:'#4a8aaa' },
-  plant:    { label:'Planta',      emoji:'🪴', w:20, h:20, base:'#1a3a1a', accent:'#2a6a2a' },
-  bookcase: { label:'Prestatgeria',emoji:'📚', w:50, h:20, base:'#3a2a1a', accent:'#7a5a2a' },
-  toilet:   { label:'WC',          emoji:'🚽', w:22, h:26, base:'#3a3a4a', accent:'#6a6a8a' },
-  bath:     { label:'Banyera',     emoji:'🛁', w:56, h:28, base:'#2a3a4a', accent:'#4a6a8a' },
-  tv:       { label:'Tele',        emoji:'📺', w:44, h:12, base:'#1a1a2a', accent:'#3a3a5a' },
+  // ── Sala d'estar ──
+  sofa:        { label:'Sofà',          emoji:'🛋', w:60, h:28, base:'#3a2a6a', accent:'#5a4a9a' },
+  armchair:    { label:'Butaca',        emoji:'💺', w:28, h:28, base:'#2a2a5a', accent:'#5a4a9a' },
+  tv:          { label:'Tele',          emoji:'📺', w:44, h:12, base:'#1a1a2a', accent:'#3a3a5a' },
+  coffeetable: { label:'Taula centre',  emoji:'☕', w:40, h:24, base:'#3a2a1a', accent:'#7a5a2a' },
+  rug:         { label:'Catifa',        emoji:'🟫', w:70, h:50, base:'#3a1a1a', accent:'#6a3a2a' },
+  lamp:        { label:'Làmpada',       emoji:'💡', w:14, h:14, base:'#2a2a14', accent:'#7a7a2a' },
+  fireplace:   { label:'Llar de foc',   emoji:'🔥', w:50, h:20, base:'#2a1010', accent:'#8a3020' },
+  painting:    { label:'Quadre',        emoji:'🖼️', w:32, h:20, base:'#1a1a2a', accent:'#4a4a7a' },
+  // ── Dormitori ──
+  bed:         { label:'Llit',          emoji:'🛏', w:60, h:50, base:'#2a4a2a', accent:'#4a8a4a' },
+  wardrobe:    { label:'Armari',        emoji:'🗄️', w:60, h:22, base:'#3a2a1a', accent:'#7a5a2a' },
+  nightstand:  { label:'Tauleta nit',   emoji:'🕯️', w:20, h:20, base:'#2a2214', accent:'#5a502a' },
+  mirror:      { label:'Mirall',        emoji:'🪞', w:18, h:34, base:'#1a2a2a', accent:'#3a6a6a' },
+  // ── Estudi ──
+  desk:        { label:'Escriptori',    emoji:'🖥', w:50, h:28, base:'#1a3a4a', accent:'#2a6a8a' },
+  bookcase:    { label:'Prestatgeria',  emoji:'📚', w:50, h:20, base:'#3a2a1a', accent:'#7a5a2a' },
+  piano:       { label:'Piano',         emoji:'🎹', w:60, h:26, base:'#101010', accent:'#404040' },
+  // ── Cuina ──
+  table:       { label:'Taula',         emoji:'🍽️', w:40, h:40, base:'#4a3a1a', accent:'#8a6a2a' },
+  fridge:      { label:'Nevera',        emoji:'🧊', w:24, h:30, base:'#2a4a5a', accent:'#4a8aaa' },
+  stove:       { label:'Fogons',        emoji:'🍳', w:44, h:30, base:'#252525', accent:'#585858' },
+  washing:     { label:'Rentadora',     emoji:'🌀', w:28, h:28, base:'#1a2a3a', accent:'#2a5a7a' },
+  dishwasher:  { label:'Rentavaixelles',emoji:'🫧', w:24, h:28, base:'#1a2a2a', accent:'#2a5a5a' },
+  // ── Bany ──
+  toilet:      { label:'WC',            emoji:'🚽', w:22, h:26, base:'#3a3a4a', accent:'#6a6a8a' },
+  bath:        { label:'Banyera',       emoji:'🛁', w:56, h:28, base:'#2a3a4a', accent:'#4a6a8a' },
+  shower:      { label:'Dutxa',         emoji:'🚿', w:28, h:28, base:'#2a3a4a', accent:'#4a7a9a' },
+  washbasin:   { label:'Lavabo',        emoji:'🪣', w:22, h:18, base:'#3a3a4a', accent:'#6a6a8a' },
+  // ── General ──
+  plant:       { label:'Planta',        emoji:'🪴', w:20, h:20, base:'#1a3a1a', accent:'#2a6a2a' },
+  door:        { label:'Porta',         emoji:'🚪', w:20, h:44, base:'#3a2a1a', accent:'#7a5a2a' },
 };
 
 // ════════════════════════════════════════════════
@@ -46,6 +68,7 @@ let builderMode=false, currentTool='draw', selectedColor=0, selectedRoom=null;
 let dragging=false, dragStart=null, dragCurrent=null, pendingRect=null, renamingId=null;
 let selectedFurnitureType='sofa';
 let draggingFurniture=null, dragFurOffX=0, dragFurOffY=0;
+let panning=false, panStartX=0, panStartY=0, panStartCamX=0, panStartCamY=0;
 let resizingFurniture=null, resizeStartWX=0, resizeStartWY=0, resizeOrigW=0, resizeOrigH=0;
 let selectedFurnitureId=null;
 let draggingMem=null, dragMemOffX=0, dragMemOffY=0;
@@ -210,7 +233,7 @@ function dp(d,v) {
 canvas.addEventListener('mousedown', e=>onDown(e.offsetX,e.offsetY));
 canvas.addEventListener('mousemove', e=>onMove(e.offsetX,e.offsetY));
 canvas.addEventListener('mouseup',   e=>onUp(e.offsetX,  e.offsetY));
-canvas.addEventListener('mouseleave',e=>{ if(dragging||draggingFurniture||draggingMem)onUp(e.offsetX,e.offsetY); });
+canvas.addEventListener('mouseleave',e=>{ if(panning||dragging||draggingFurniture||draggingMem)onUp(e.offsetX,e.offsetY); });
 canvas.addEventListener('touchstart',e=>{ e.preventDefault(); const t=e.touches[0],r=canvas.getBoundingClientRect(); onDown(t.clientX-r.left,t.clientY-r.top); },{passive:false});
 canvas.addEventListener('touchmove', e=>{ e.preventDefault(); const t=e.touches[0],r=canvas.getBoundingClientRect(); onMove(t.clientX-r.left,t.clientY-r.top); },{passive:false});
 canvas.addEventListener('touchend',  e=>{ const t=e.changedTouches[0],r=canvas.getBoundingClientRect(); onUp(t.clientX-r.left,t.clientY-r.top); });
@@ -224,7 +247,11 @@ function furResizeHandle(f) {
 }
 
 function onDown(cx,cy) {
-  if(!builderMode) return;
+  if(!builderMode) {
+    panning=true; panStartX=cx; panStartY=cy; panStartCamX=camX; panStartCamY=camY;
+    canvas.style.cursor='grabbing';
+    return;
+  }
   const w=c2w(cx,cy);
   if (currentTool==='furniture') {
     // 1. Check resize handle first (8px world radius)
@@ -262,7 +289,7 @@ function onDown(cx,cy) {
   }
   if (currentTool==='erase') {
     const f=furAtWorld(w.x,w.y);
-    if(f){ furniture=furniture.filter(x=>x.id!==f.id); if(selectedFurnitureId===f.id)selectedFurnitureId=null; save(); showNotif('🗑 Moble eliminat'); return; }
+    if(f){ const del=f; furniture=furniture.filter(x=>x.id!==f.id); if(selectedFurnitureId===f.id)selectedFurnitureId=null; save(); showUndoNotif('🗑 '+FURNITURE[del.type].label+' eliminat', ()=>{ furniture.push(del); save(); showNotif('↩ '+FURNITURE[del.type].label+' restaurat'); }); return; }
     const r=roomAt(w.x,w.y);
     if(r) deleteRoom(r.id);
     return;
@@ -273,6 +300,12 @@ function onDown(cx,cy) {
   selectedRoom=roomAt(w.x,w.y)?.id||null;
 }
 function onMove(cx,cy) {
+  if(panning) {
+    const S=getScale();
+    camX=Math.max(0,Math.min(Math.max(0,MAP_W*S-cw), panStartCamX-(cx-panStartX)));
+    camY=Math.max(0,Math.min(Math.max(0,MAP_H*S-ch), panStartCamY-(cy-panStartY)));
+    return;
+  }
   if(!builderMode) return;
   const w=c2w(cx,cy);
   if(resizingFurniture){
@@ -300,6 +333,13 @@ function onMove(cx,cy) {
   if(dragging) dragCurrent={x:snap(w.x),y:snap(w.y)};
 }
 function onUp(cx,cy) {
+  if(panning){
+    panning=false; canvas.style.cursor='grab';
+    const S=getScale();
+    player.x=Math.max(0,Math.min(MAP_W,(camX+cw/2)/S));
+    player.y=Math.max(0,Math.min(MAP_H,(camY+ch/2)/S));
+    return;
+  }
   if(resizingFurniture){ resizingFurniture=null; save(); return; }
   if(draggingFurniture){ draggingFurniture=null; save(); return; }
   if(draggingMem){ draggingMem=null; save(); return; }
@@ -316,10 +356,16 @@ function onUp(cx,cy) {
 //  ROOMS
 // ════════════════════════════════════════════════
 function deleteRoom(id) {
-  if(!confirm('Esborrar aquesta habitació i tots els seus elements?')) return;
+  const room=rooms.find(r=>r.id===id); if(!room) return;
+  const deletedMems=memories.filter(m=>m.room===id);
+  const deletedFurn=furniture.filter(f=>f.room===id);
   rooms=rooms.filter(r=>r.id!==id); memories=memories.filter(m=>m.room!==id); furniture=furniture.filter(f=>f.room!==id);
   if(selectedRoom===id) selectedRoom=null;
-  save(); refreshRoomSelect(); showNotif('🗑 Habitació eliminada');
+  save(); refreshRoomSelect();
+  showUndoNotif('🗑 '+room.name+' eliminada', ()=>{
+    rooms.push(room); memories.push(...deletedMems); furniture.push(...deletedFurn);
+    save(); refreshRoomSelect(); showNotif('↩ '+room.name+' restaurada');
+  });
 }
 function openRoomModal(def) { document.getElementById('modal-input').value=def; document.getElementById('room-modal').classList.add('visible'); setTimeout(()=>document.getElementById('modal-input').select(),60); }
 function closeRoomModal()   { document.getElementById('room-modal').classList.remove('visible'); pendingRect=null; renamingId=null; }
@@ -591,12 +637,25 @@ function updateCamera() {
   camY+=(Math.max(0,Math.min(Math.max(0,my),ty))-camY)*.12;
 }
 
+function updateBuilderCamera() {
+  const S=getScale(), step=SPEED*3.5;
+  let dx=0, dy=0;
+  if(keys['ArrowLeft'] ||dpKeys.left)  dx-=step;
+  if(keys['ArrowRight']||dpKeys.right) dx+=step;
+  if(keys['ArrowUp']   ||dpKeys.up)    dy-=step;
+  if(keys['ArrowDown'] ||dpKeys.down)  dy+=step;
+  if(!dx&&!dy) return;
+  const mx=Math.max(0,MAP_W*S-cw), my=Math.max(0,MAP_H*S-ch);
+  camX=Math.max(0,Math.min(mx,camX+dx));
+  camY=Math.max(0,Math.min(my,camY+dy));
+}
+
 // ════════════════════════════════════════════════
 //  MAIN LOOP
 // ════════════════════════════════════════════════
 function loop() {
   animF++; resizeCanvas(); updatePlayer();
-  if(!builderMode) updateCamera();
+  if(!builderMode) updateCamera(); else updateBuilderCamera();
   ctx.fillStyle='#04060f'; ctx.fillRect(0,0,cw,ch);
   const S=getScale(), ox=Math.round(-camX), oy=Math.round(-camY);
   drawGrid(ox,oy); drawRooms(ox,oy); drawFurniture(ox,oy);
@@ -614,8 +673,10 @@ function toggleBuilder() {
   builderMode=!builderMode;
   document.getElementById('builder-bar').classList.toggle('visible',builderMode);
   document.getElementById('btn-build').classList.toggle('active',builderMode);
-  document.getElementById('canvas-wrap').style.bottom=builderMode?'160px':'108px';
+  document.getElementById('canvas-wrap').style.bottom=builderMode?'210px':'108px';
   if(!builderMode){selectedRoom=null;dragging=false;draggingFurniture=null;draggingMem=null;resizingFurniture=null;selectedFurnitureId=null;}
+  document.getElementById('hint-explore').style.display=builderMode?'none':'';
+  document.getElementById('hint-builder').style.display=builderMode?'':'none';
   updateCursor();
   showNotif(builderMode?'🏗 Constructor ON':'🎮 Explorar');
 }
@@ -648,10 +709,27 @@ function buildSwatches() {
   ).join('');
 }
 function selectColor(i){selectedColor=i;buildSwatches();}
+const FURN_ROWS = [
+  [
+    { label:'Sala',     keys:['sofa','armchair','tv','coffeetable','rug','lamp','fireplace','painting'] },
+    { label:'Dormitori',keys:['bed','wardrobe','nightstand','mirror'] },
+  ],
+  [
+    { label:'Estudi',   keys:['desk','bookcase','piano'] },
+    { label:'Cuina',    keys:['table','fridge','stove','washing','dishwasher'] },
+    { label:'Bany',     keys:['toilet','bath','shower','washbasin'] },
+    { label:'General',  keys:['plant','door'] },
+  ],
+];
 function buildFurniturePicker() {
-  document.getElementById('furniture-picker').innerHTML=Object.entries(FURNITURE).map(([k,v])=>
-    `<div class="furn-chip ${k===selectedFurnitureType?'active':''}" onclick="selectFurniture('${k}')" title="${v.label}">${v.emoji}</div>`
-  ).join('');
+  function chips(groups) {
+    return groups.map(g=>
+      `<span class="furn-group-label">${g.label}</span>`+
+      g.keys.map(k=>`<div class="furn-chip ${k===selectedFurnitureType?'active':''}" onclick="selectFurniture('${k}')" title="${FURNITURE[k].label}">${FURNITURE[k].emoji}</div>`).join('')
+    ).join('');
+  }
+  document.getElementById('furniture-picker').innerHTML=
+    FURN_ROWS.map(row=>`<div class="furn-row">${chips(row)}</div>`).join('');
 }
 function selectFurniture(k){
   selectedFurnitureType=k;
@@ -701,8 +779,11 @@ function addMemory() {
   showNotif('✦ Memòria afegida a '+r.name);
 }
 function deleteMemory(e,id){
-  e.stopPropagation(); memories=memories.filter(m=>m.id!==id); save(); renderEditorList();
-  if(openMem?.id===id) closeMemory(); showNotif('🗑 Eliminada');
+  e.stopPropagation();
+  const del=memories.find(m=>m.id===id); if(!del) return;
+  memories=memories.filter(m=>m.id!==id); save(); renderEditorList();
+  if(openMem?.id===id) closeMemory();
+  showUndoNotif('🗑 '+del.title+' eliminada', ()=>{ memories.push(del); save(); renderEditorList(); showNotif('↩ '+del.title+' restaurada'); });
 }
 function teleportTo(id){
   const m=memories.find(m=>m.id===id); if(!m) return;
@@ -778,8 +859,22 @@ function closeQuiz(){
 // ════════════════════════════════════════════════
 function showNotif(msg){
   const el=document.getElementById('notif');
-  el.textContent=msg; el.classList.add('show');
+  el.innerHTML=''; el.textContent=msg;
+  el.classList.remove('has-undo'); el._undoFn=null;
+  el.classList.add('show');
   clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'),2700);
+}
+function showUndoNotif(msg, undoFn){
+  const el=document.getElementById('notif');
+  el.innerHTML=`<span>${msg}</span><button class="undo-btn" onclick="doUndo()">↩ Desfer</button>`;
+  el._undoFn=undoFn;
+  el.classList.add('show','has-undo');
+  clearTimeout(el._t); el._t=setTimeout(()=>{ el.classList.remove('show','has-undo'); el._undoFn=null; },4000);
+}
+function doUndo(){
+  const el=document.getElementById('notif');
+  if(el._undoFn){ el._undoFn(); el._undoFn=null; }
+  clearTimeout(el._t); el.classList.remove('show','has-undo');
 }
 
 // ════════════════════════════════════════════════

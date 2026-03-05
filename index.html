@@ -58,17 +58,18 @@
 
       <!-- Builder toolbar -->
       <div id="builder-bar">
-        <span class="bbar-label">🏗 CONSTRUCTOR</span>
-        <div class="bbar-sep"></div>
-        <button class="bbar-btn draw active" id="tool-draw"      onclick="setTool('draw')">✦ DIBUIXAR</button>
-        <button class="bbar-btn furn"        id="tool-furniture" onclick="setTool('furniture')">🪑 MOBLE</button>
-        <button class="bbar-btn movemem"     id="tool-movemem"   onclick="setTool('movemem')">✥ MOURE MEM.</button>
-        <button class="bbar-btn erase"       id="tool-erase"     onclick="setTool('erase')">✕ ESBORRAR</button>
-        <button class="bbar-btn rename"                          onclick="renameSelected()">✏ RENOMBRAR</button>
-        <div class="bbar-sep"></div>
-        <div class="color-swatches" id="swatches"></div>
+        <div class="bbar-top">
+          <span class="bbar-label">🏗 CONSTRUCTOR</span>
+          <div class="bbar-sep"></div>
+          <button class="bbar-btn draw active" id="tool-draw"      onclick="setTool('draw')">✦ DIBUIXAR</button>
+          <button class="bbar-btn furn"        id="tool-furniture" onclick="setTool('furniture')">🪑 MOBLE</button>
+          <button class="bbar-btn movemem"     id="tool-movemem"   onclick="setTool('movemem')">✥ MOURE MEM.</button>
+          <button class="bbar-btn erase"       id="tool-erase"     onclick="setTool('erase')">✕ ESBORRAR</button>
+          <button class="bbar-btn rename"                          onclick="renameSelected()">✏ RENOMBRAR</button>
+          <div class="bbar-sep"></div>
+          <div class="color-swatches" id="swatches"></div>
+        </div>
         <div id="furniture-picker" style="display:none"></div>
-        <span class="bbar-hint">Arrossega per dibuixar · Scroll per zoom</span>
       </div>
 
       <!-- D-pad controls -->
@@ -85,9 +86,10 @@
           <div class="empty"></div>
         </div>
         <div class="hint">
-          <kbd>↑↓←→</kbd> Moure &nbsp;·&nbsp; <kbd>E</kbd> Interactuar<br />
-          <kbd>+</kbd><kbd>-</kbd> Zoom &nbsp;·&nbsp; <kbd>Scroll</kbd> Zoom ràpid<br />
-          Apropa't als objectes brillants ✦
+          <span id="hint-explore"><kbd>↑↓←→</kbd> Moure &nbsp;·&nbsp; <kbd>E</kbd> Interactuar<br />
+          Apropa't als objectes brillants ✦<br /></span>
+          <span id="hint-builder" style="display:none">Arrossega per dibuixar &nbsp;·&nbsp; <kbd>↑↓←→</kbd> Navegar<br /></span>
+          <kbd>+</kbd><kbd>-</kbd> Zoom &nbsp;·&nbsp; <kbd>Scroll</kbd> Zoom ràpid
         </div>
         <div style="width:110px"></div>
       </div>
