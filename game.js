@@ -37,37 +37,92 @@ const CAT = {
 
 const FURNITURE = {
   // ── Sala d'estar ──
-  sofa:        { label:'Sofà',          emoji:'🛋', w:60, h:28, base:'#3a2a6a', accent:'#5a4a9a' },
-  armchair:    { label:'Butaca',        emoji:'💺', w:28, h:28, base:'#2a2a5a', accent:'#5a4a9a' },
-  tv:          { label:'Tele',          emoji:'📺', w:44, h:12, base:'#1a1a2a', accent:'#3a3a5a' },
-  coffeetable: { label:'Taula centre',  emoji:'☕', w:40, h:24, base:'#3a2a1a', accent:'#7a5a2a' },
-  rug:         { label:'Catifa',        emoji:'🟫', w:70, h:50, base:'#3a1a1a', accent:'#6a3a2a' },
-  lamp:        { label:'Làmpada',       emoji:'💡', w:14, h:14, base:'#2a2a14', accent:'#7a7a2a' },
-  fireplace:   { label:'Llar de foc',   emoji:'🔥', w:50, h:20, base:'#2a1010', accent:'#8a3020' },
-  painting:    { label:'Quadre',        emoji:'🖼️', w:32, h:20, base:'#1a1a2a', accent:'#4a4a7a' },
+  sofa:        { label:'Sofà',           emoji:'🛋',  w:20, h:20, base:'#3a2a6a', accent:'#5a4a9a' },
+  armchair:    { label:'Butaca',         emoji:'💺',  w:20, h:20, base:'#2a2a5a', accent:'#5a4a9a' },
+  tv:          { label:'Tele',           emoji:'📺',  w:20, h:20, base:'#1a1a2a', accent:'#3a3a5a' },
+  coffeetable: { label:'Taula centre',   emoji:'☕',  w:20, h:20, base:'#3a2a1a', accent:'#7a5a2a' },
+  rug:         { label:'Catifa',         emoji:'🟫',  w:20, h:20, base:'#3a1a1a', accent:'#6a3a2a' },
+  lamp:        { label:'Làmpada',        emoji:'💡',  w:20, h:20, base:'#2a2a14', accent:'#7a7a2a' },
+  fireplace:   { label:'Llar de foc',    emoji:'🔥',  w:20, h:20, base:'#2a1010', accent:'#8a3020' },
+  painting:    { label:'Quadre',         emoji:'🖼️', w:20, h:20, base:'#1a1a2a', accent:'#4a4a7a' },
   // ── Dormitori ──
-  bed:         { label:'Llit',          emoji:'🛏', w:60, h:50, base:'#2a4a2a', accent:'#4a8a4a' },
-  wardrobe:    { label:'Armari',        emoji:'🗄️', w:60, h:22, base:'#3a2a1a', accent:'#7a5a2a' },
-  nightstand:  { label:'Tauleta nit',   emoji:'🕯️', w:20, h:20, base:'#2a2214', accent:'#5a502a' },
-  mirror:      { label:'Mirall',        emoji:'🪞', w:18, h:34, base:'#1a2a2a', accent:'#3a6a6a' },
+  bed:         { label:'Llit',           emoji:'🛏',  w:20, h:20, base:'#2a4a2a', accent:'#4a8a4a' },
+  wardrobe:    { label:'Armari',         emoji:'🗄️', w:20, h:20, base:'#3a2a1a', accent:'#7a5a2a' },
+  nightstand:  { label:'Tauleta nit',    emoji:'🕯️', w:20, h:20, base:'#2a2214', accent:'#5a502a' },
+  mirror:      { label:'Mirall',         emoji:'🪞',  w:20, h:20, base:'#1a2a2a', accent:'#3a6a6a' },
   // ── Estudi ──
-  desk:        { label:'Escriptori',    emoji:'🖥', w:50, h:28, base:'#1a3a4a', accent:'#2a6a8a' },
-  bookcase:    { label:'Prestatgeria',  emoji:'📚', w:50, h:20, base:'#3a2a1a', accent:'#7a5a2a' },
-  piano:       { label:'Piano',         emoji:'🎹', w:60, h:26, base:'#101010', accent:'#404040' },
+  desk:        { label:'Escriptori',     emoji:'🖥',  w:20, h:20, base:'#1a3a4a', accent:'#2a6a8a' },
+  bookcase:    { label:'Prestatgeria',   emoji:'📚',  w:20, h:20, base:'#3a2a1a', accent:'#7a5a2a' },
+  piano:       { label:'Piano',          emoji:'🎹',  w:20, h:20, base:'#101010', accent:'#404040' },
   // ── Cuina ──
-  table:       { label:'Taula',         emoji:'🍽️', w:40, h:40, base:'#4a3a1a', accent:'#8a6a2a' },
-  fridge:      { label:'Nevera',        emoji:'🧊', w:24, h:30, base:'#2a4a5a', accent:'#4a8aaa' },
-  stove:       { label:'Fogons',        emoji:'🍳', w:44, h:30, base:'#252525', accent:'#585858' },
-  washing:     { label:'Rentadora',     emoji:'🌀', w:28, h:28, base:'#1a2a3a', accent:'#2a5a7a' },
-  dishwasher:  { label:'Rentavaixelles',emoji:'🫧', w:24, h:28, base:'#1a2a2a', accent:'#2a5a5a' },
+  table:       { label:'Taula',          emoji:'🍽️', w:20, h:20, base:'#4a3a1a', accent:'#8a6a2a' },
+  fridge:      { label:'Nevera',         emoji:'🧊',  w:20, h:20, base:'#2a4a5a', accent:'#4a8aaa' },
+  stove:       { label:'Fogons',         emoji:'🍳',  w:20, h:20, base:'#252525', accent:'#585858' },
+  washing:     { label:'Rentadora',      emoji:'🌀',  w:20, h:20, base:'#1a2a3a', accent:'#2a5a7a' },
   // ── Bany ──
-  toilet:      { label:'WC',            emoji:'🚽', w:22, h:26, base:'#3a3a4a', accent:'#6a6a8a' },
-  bath:        { label:'Banyera',       emoji:'🛁', w:56, h:28, base:'#2a3a4a', accent:'#4a6a8a' },
-  shower:      { label:'Dutxa',         emoji:'🚿', w:28, h:28, base:'#2a3a4a', accent:'#4a7a9a' },
-  washbasin:   { label:'Lavabo',        emoji:'🪣', w:22, h:18, base:'#3a3a4a', accent:'#6a6a8a' },
+  toilet:      { label:'WC',             emoji:'🚽',  w:20, h:20, base:'#3a3a4a', accent:'#6a6a8a' },
+  bath:        { label:'Banyera',        emoji:'🛁',  w:20, h:20, base:'#2a3a4a', accent:'#4a6a8a' },
+  shower:      { label:'Dutxa',          emoji:'🚿',  w:20, h:20, base:'#2a3a4a', accent:'#4a7a9a' },
   // ── General ──
-  plant:       { label:'Planta',        emoji:'🪴', w:20, h:20, base:'#1a3a1a', accent:'#2a6a2a' },
-  door:        { label:'Porta',         emoji:'🚪', w:20, h:44, base:'#3a2a1a', accent:'#7a5a2a' },
+  plant:       { label:'Planta',         emoji:'🪴',  w:20, h:20, base:'#1a3a1a', accent:'#2a6a2a' },
+  door:        { label:'Porta',          emoji:'🚪',  w:20, h:20, base:'#3a2a1a', accent:'#7a5a2a' },
+  // ── Animals ──
+  lion:        { label:'Lleó',           emoji:'🦁',  w:20, h:20, base:'#4a3a10', accent:'#9a7a20' },
+  elephant:    { label:'Elefant',        emoji:'🐘',  w:20, h:20, base:'#3a3a3a', accent:'#6a6a6a' },
+  snake:       { label:'Serp',           emoji:'🐍',  w:20, h:20, base:'#1a3a1a', accent:'#2a7a2a' },
+  eagle:       { label:'Àguila',         emoji:'🦅',  w:20, h:20, base:'#3a2a10', accent:'#7a5a20' },
+  shark:       { label:'Tauró',          emoji:'🦈',  w:20, h:20, base:'#1a2a4a', accent:'#2a4a8a' },
+  bull:        { label:'Toro',           emoji:'🐂',  w:20, h:20, base:'#3a1a10', accent:'#7a3a20' },
+  wolf:        { label:'Llop',           emoji:'🐺',  w:20, h:20, base:'#2a2a3a', accent:'#5a5a7a' },
+  dragon:      { label:'Drac',           emoji:'🐉',  w:20, h:20, base:'#1a3a1a', accent:'#2a8a3a' },
+  octopus:     { label:'Pop',            emoji:'🐙',  w:20, h:20, base:'#4a1a3a', accent:'#9a3a7a' },
+  horse:       { label:'Cavall',         emoji:'🐴',  w:20, h:20, base:'#3a2a1a', accent:'#7a5a2a' },
+  bear:        { label:'Os',             emoji:'🐻',  w:20, h:20, base:'#3a2a10', accent:'#6a4a20' },
+  frog:        { label:'Granota',        emoji:'🐸',  w:20, h:20, base:'#1a3a1a', accent:'#2a7a2a' },
+  // ── Cossos i ment ──
+  brain:       { label:'Cervell',        emoji:'🧠',  w:20, h:20, base:'#3a1a2a', accent:'#8a3a6a' },
+  eye:         { label:'Ull',            emoji:'👁',  w:20, h:20, base:'#1a2a3a', accent:'#2a5a8a' },
+  skull:       { label:'Calavera',       emoji:'💀',  w:20, h:20, base:'#2a2a2a', accent:'#5a5a5a' },
+  heart:       { label:'Cor',            emoji:'❤️', w:20, h:20, base:'#3a1010', accent:'#8a2020' },
+  bone:        { label:'Os (cos)',       emoji:'🦴',  w:20, h:20, base:'#3a3a2a', accent:'#7a7a5a' },
+  hand:        { label:'Mà',             emoji:'✋',  w:20, h:20, base:'#3a2a1a', accent:'#7a5a3a' },
+  // ── Foc i emergències ──
+  firetruck:   { label:'Camió bombers',  emoji:'🚒',  w:20, h:20, base:'#3a0a0a', accent:'#9a1a1a' },
+  extinguisher:{ label:'Extintor',       emoji:'🧯',  w:20, h:20, base:'#3a0a0a', accent:'#9a2a2a' },
+  helmet:      { label:'Casc',           emoji:'⛑️', w:20, h:20, base:'#2a3a1a', accent:'#5a7a3a' },
+  explosion:   { label:'Explosió',       emoji:'💥',  w:20, h:20, base:'#3a2a0a', accent:'#9a6a0a' },
+  radioactive: { label:'Radioactiu',     emoji:'☢️', w:20, h:20, base:'#1a3a0a', accent:'#4a9a0a' },
+  biohazard:   { label:'Bioperill',      emoji:'☣️', w:20, h:20, base:'#2a2a0a', accent:'#7a7a0a' },
+  // ── Natura i elements ──
+  mountain:    { label:'Muntanya',       emoji:'⛰️', w:20, h:20, base:'#2a2a2a', accent:'#5a5a5a' },
+  volcano:     { label:'Volcà',          emoji:'🌋',  w:20, h:20, base:'#2a1010', accent:'#7a2020' },
+  wave:        { label:'Ona',            emoji:'🌊',  w:20, h:20, base:'#0a2a4a', accent:'#1a5a8a' },
+  lightning:   { label:'Llamp',          emoji:'⚡',  w:20, h:20, base:'#2a2a0a', accent:'#8a8a0a' },
+  tornado:     { label:'Tornado',        emoji:'🌪️', w:20, h:20, base:'#1a1a3a', accent:'#3a3a7a' },
+  tree:        { label:'Arbre',          emoji:'🌳',  w:20, h:20, base:'#1a2a1a', accent:'#2a5a2a' },
+  // ── Ciència i tècnica ──
+  atom:        { label:'Àtom',           emoji:'⚛️', w:20, h:20, base:'#0a1a3a', accent:'#1a4a8a' },
+  microscope:  { label:'Microscopi',     emoji:'🔬',  w:20, h:20, base:'#1a2a1a', accent:'#2a5a3a' },
+  magnet:      { label:'Imant',          emoji:'🧲',  w:20, h:20, base:'#2a0a0a', accent:'#7a1a1a' },
+  gear:        { label:'Engranatge',     emoji:'⚙️', w:20, h:20, base:'#2a2a2a', accent:'#5a5a5a' },
+  battery:     { label:'Bateria',        emoji:'🔋',  w:20, h:20, base:'#1a2a1a', accent:'#2a6a2a' },
+  circuit:     { label:'Circuit',        emoji:'💻',  w:20, h:20, base:'#0a1a0a', accent:'#1a4a1a' },
+  flask:       { label:'Matràs',         emoji:'⚗️', w:20, h:20, base:'#1a2a3a', accent:'#2a5a7a' },
+  // ── Objectes mnemotècnics ──
+  key:         { label:'Clau',           emoji:'🗝️', w:20, h:20, base:'#3a2a0a', accent:'#8a6a0a' },
+  bomb:        { label:'Bomba',          emoji:'💣',  w:20, h:20, base:'#1a1a1a', accent:'#4a4a4a' },
+  trophy:      { label:'Trofeu',         emoji:'🏆',  w:20, h:20, base:'#3a2a0a', accent:'#9a7a0a' },
+  sword:       { label:'Espasa',         emoji:'⚔️', w:20, h:20, base:'#2a2a3a', accent:'#5a5a7a' },
+  shield:      { label:'Escut',          emoji:'🛡️', w:20, h:20, base:'#1a2a3a', accent:'#2a5a7a' },
+  crown:       { label:'Corona',         emoji:'👑',  w:20, h:20, base:'#3a2a0a', accent:'#9a7a0a' },
+  anchor:      { label:'Àncora',         emoji:'⚓',  w:20, h:20, base:'#1a2a3a', accent:'#2a5a7a' },
+  hourglass:   { label:'Rellotge sorra', emoji:'⏳',  w:20, h:20, base:'#2a1a0a', accent:'#6a4a0a' },
+  compass:     { label:'Brúixola',       emoji:'🧭',  w:20, h:20, base:'#1a2a1a', accent:'#3a5a3a' },
+  map:         { label:'Mapa',           emoji:'🗺️', w:20, h:20, base:'#2a2a1a', accent:'#5a5a2a' },
+  book:        { label:'Llibre',         emoji:'📖',  w:20, h:20, base:'#2a1a0a', accent:'#6a4a0a' },
+  scroll:      { label:'Pergamí',        emoji:'📜',  w:20, h:20, base:'#3a2a0a', accent:'#7a5a0a' },
+  magnifier:   { label:'Lupa',           emoji:'🔍',  w:20, h:20, base:'#1a2a2a', accent:'#2a5a5a' },
+  warning:     { label:'Avís',           emoji:'⚠️', w:20, h:20, base:'#3a2a0a', accent:'#9a6a0a' },
 };
 
 // ════════════════════════════════════════════════
@@ -92,6 +147,10 @@ const ZOOM_MIN=0.4, ZOOM_MAX=3.0, ZOOM_STEP=0.2;
 function getScale() { return BASE_SCALE * zoomLevel; }
 
 const player = { x:120, y:120 };
+let playerCfg = { gender:'m', skin:'#f0c080', outfit:'#e8a020', helmetColor:'#e8a020', name:'' };
+function loadPlayerCfg(){ try{ const s=localStorage.getItem('pc_player'); if(s) playerCfg={...playerCfg,...JSON.parse(s)}; }catch(e){} }
+function savePlayerCfg(){ try{ localStorage.setItem('pc_player',JSON.stringify(playerCfg)); }catch(e){} }
+loadPlayerCfg();
 const keys={}, dpKeys={};
 let camX=0, camY=0, glowPh=0, animF=0;
 let nearMem=null, openMem=null, curRoomName='—', prevRoomId=null;
@@ -205,11 +264,12 @@ function importPalace() {
 //  HELPERS
 // ════════════════════════════════════════════════
 function snap(v)           { return Math.round(v/GRID)*GRID; }
+function getFD(type)       { return FURNITURE[type] || {label:'?',emoji:'❓',w:28,h:28,base:'#222',accent:'#444'}; }
 function roomAt(x,y)       { return rooms.find(r=>x>=r.x&&x<=r.x+r.w&&y>=r.y&&y<=r.y+r.h)||null; }
 function memPos(m) {
   if (m.furnitureId) {
     const f=furniture.find(f=>f.id===m.furnitureId);
-    if (f) { const p=furPos(f); if(p){ const fw=f.scaleW||FURNITURE[f.type].w, fh=f.scaleH||FURNITURE[f.type].h; return {x:p.x+fw/2, y:p.y+fh/2}; } }
+    if (f) { const p=furPos(f); if(p){ const fw=f.scaleW||getFD(f.type).w, fh=f.scaleH||getFD(f.type).h; return {x:p.x+fw/2, y:p.y+fh/2}; } }
   }
   const r=rooms.find(r=>r.id===m.room); return r?{x:r.x+m.ox,y:r.y+m.oy}:null;
 }
@@ -218,7 +278,7 @@ function dist(ax,ay,bx,by) { return Math.hypot(ax-bx,ay-by); }
 function c2w(cx,cy)        { const S=getScale(); return{x:(cx+camX)/S,y:(cy+camY)/S}; }
 function resizeCanvas()    { const w=document.getElementById('canvas-wrap'); cw=w.clientWidth; ch=w.clientHeight; canvas.width=cw; canvas.height=ch; }
 function memAtWorld(wx,wy) { for(const m of memories){const p=memPos(m);if(!p)continue;if(dist(wx,wy,p.x,p.y)<18)return m;} return null; }
-function furAtWorld(wx,wy) { for(const f of furniture){const p=furPos(f);if(!p)continue;const fw=f.scaleW||FURNITURE[f.type].w;const fh=f.scaleH||FURNITURE[f.type].h;if(wx>=p.x&&wx<=p.x+fw&&wy>=p.y&&wy<=p.y+fh)return f;} return null; }
+function furAtWorld(wx,wy) { for(const f of furniture){const p=furPos(f);if(!p)continue;const fd=getFD(f.type);if(!fd)continue;const fw=f.scaleW||fd.w;const fh=f.scaleH||fd.h;if(wx>=p.x&&wx<=p.x+fw&&wy>=p.y&&wy<=p.y+fh)return f;} return null; }
 
 // ════════════════════════════════════════════════
 //  ZOOM
@@ -286,8 +346,8 @@ canvas.addEventListener('touchend',  e=>{ const t=e.changedTouches[0],r=canvas.g
 function furResizeHandle(f) {
   // Returns world coords of the resize handle (bottom-right corner)
   const p=furPos(f); if(!p) return null;
-  const fw = f.scaleW || FURNITURE[f.type].w;
-  const fh = f.scaleH || FURNITURE[f.type].h;
+  const fw = f.scaleW || getFD(f.type).w;
+  const fh = f.scaleH || getFD(f.type).h;
   return { x: p.x+fw, y: p.y+fh };
 }
 
@@ -305,8 +365,8 @@ function onDown(cx,cy) {
       if(dist(w.x,w.y,h.x,h.y)<10) {
         resizingFurniture=f;
         resizeStartWX=w.x; resizeStartWY=w.y;
-        resizeOrigW=f.scaleW||FURNITURE[f.type].w;
-        resizeOrigH=f.scaleH||FURNITURE[f.type].h;
+        resizeOrigW=f.scaleW||getFD(f.type).w;
+        resizeOrigH=f.scaleH||getFD(f.type).h;
         return;
       }
     }
@@ -322,8 +382,8 @@ function onDown(cx,cy) {
       const oy=Math.max(0, Math.min(r.h-fh, snap(w.y-r.y-fh/2)));
       furniture.push({id:nextFid++,type:selectedFurnitureType,room:r.id,ox,oy});
       selectedFurnitureId=furniture[furniture.length-1].id;
-      save(); showNotif('🪑 '+fd.label+' col·locat');
-    } else { showNotif('⚠ Col·loca el moble dins una habitació'); }
+      save(); showNotif('🖼 '+fd.label+' col·locada');
+    } else { showNotif('⚠ Col·loca la imatge dins una habitació'); }
     return;
   }
   if (currentTool==='movemem') {
@@ -334,7 +394,7 @@ function onDown(cx,cy) {
   }
   if (currentTool==='erase') {
     const f=furAtWorld(w.x,w.y);
-    if(f){ const del=f; furniture=furniture.filter(x=>x.id!==f.id); if(selectedFurnitureId===f.id)selectedFurnitureId=null; save(); showUndoNotif('🗑 '+FURNITURE[del.type].label+' eliminat', ()=>{ furniture.push(del); save(); showNotif('↩ '+FURNITURE[del.type].label+' restaurat'); }); return; }
+    if(f){ const del=f; furniture=furniture.filter(x=>x.id!==f.id); if(selectedFurnitureId===f.id)selectedFurnitureId=null; save(); showUndoNotif('🗑 '+getFD(del.type).label+' eliminat', ()=>{ furniture.push(del); save(); showNotif('↩ '+getFD(del.type).label+' restaurat'); }); return; }
     const r=roomAt(w.x,w.y);
     if(r) deleteRoom(r.id);
     return;
@@ -364,8 +424,8 @@ function onMove(cx,cy) {
     return;
   }
   if(draggingFurniture){
-    const fw=draggingFurniture.scaleW||FURNITURE[draggingFurniture.type].w;
-    const fh=draggingFurniture.scaleH||FURNITURE[draggingFurniture.type].h;
+    const fw=draggingFurniture.scaleW||getFD(draggingFurniture.type).w;
+    const fh=draggingFurniture.scaleH||getFD(draggingFurniture.type).h;
     const targetRoom=roomAt(w.x,w.y);
     if(targetRoom){
       draggingFurniture.room=targetRoom.id;
@@ -488,7 +548,7 @@ function drawFurniture(ox,oy) {
   const S=getScale();
   for(const f of furniture){
     const p=furPos(f); if(!p) continue;
-    const fd=FURNITURE[f.type];
+    const fd=getFD(f.type); if(!fd) continue;
     const fw=f.scaleW||fd.w, fh=f.scaleH||fd.h;
     const sx=p.x*S+ox, sy=p.y*S+oy, sw=fw*S, sh=fh*S;
     const isDrag=draggingFurniture&&draggingFurniture.id===f.id;
@@ -508,10 +568,11 @@ function drawFurniture(ox,oy) {
     ctx.lineWidth=isDrag||isResize||isSel?2:1;
     ctx.beginPath(); ctx.roundRect(sx,sy,sw,sh,4); ctx.stroke();
 
-    // Emoji
+    // Emoji moble
     ctx.font=`${Math.min(sw,sh)*0.52}px serif`;
     ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText(fd.emoji,sx+sw/2,sy+sh/2); ctx.textBaseline='alphabetic';
+    ctx.fillText(fd.emoji,sx+sw/2,sy+sh/2);
+    ctx.textBaseline='alphabetic';
 
     // Memory indicator (small glowing dot if memories are linked to this furniture)
     const memCount=memories.filter(m=>m.furnitureId===f.id).length;
@@ -596,7 +657,8 @@ function drawMemories(ox,oy) {
     const sx=pos.x*S+ox, sy=pos.y*S+oy;
     const isN=nearMem&&nearMem.id===m.id, isDrag=draggingMem&&draggingMem.id===m.id;
     const rad=(isN||isDrag?23:16)*S;
-    const col=m.cat==='ley'?'255,100,100':m.cat==='proc'?'80,190,255':m.cat==='dato'?'255,195,40':'145,90,255';
+    const CAT_COLORS={leg_gen:'255,100,100',leg_bom:'255,140,60',ciencies:'80,190,255',foc:'255,100,30',risc:'180,255,100',mecanica:'160,160,160',instal:'80,180,255',const_:'200,150,80',territori:'100,200,130'};
+    const col=CAT_COLORS[m.cat]||'150,150,255';
     const gr=ctx.createRadialGradient(sx,sy,0,sx,sy,rad);
     gr.addColorStop(0,`rgba(${col},${isN||isDrag?.5+.3*g:.18+.1*g})`);
     gr.addColorStop(1,`rgba(${col},0)`);
@@ -605,7 +667,8 @@ function drawMemories(ox,oy) {
     const bounce=isN?Math.sin(glowPh*2)*2.5:0;
     ctx.font=`${(isN?20:15)*S}px serif`;
     ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText(CAT[m.cat].icon,sx,sy-bounce*S); ctx.textBaseline='alphabetic';
+    ctx.fillText(CAT[m.cat]?.icon||'✦',sx,sy-bounce*S);
+    ctx.textBaseline='alphabetic';
     if(isN){
       ctx.fillStyle=`rgba(255,255,255,${.38+.38*g})`;
       ctx.font=`bold ${7*S}px Share Tech Mono,monospace`;
@@ -619,21 +682,115 @@ function drawMemories(ox,oy) {
   }
 }
 
+// ── Dibuix compartit del personatge (casc gran, top-down) ──
+function _drawCharHelmet(c, sx, cy, sz, cfg) {
+  const skin  = cfg.skin, outfit = cfg.outfit, hcol = cfg.helmetColor;
+  const isFem = cfg.gender === 'f';
+  const hr  = sz * .68;           // radi de la cúpula (gran!)
+  const hcy = cy - sz * .04;      // centre Y de la cúpula
+  const fcy = hcy + hr * .36;     // centre Y de la cara (part baixa del casc)
+  const fr  = hr * .50;           // radi de l'obertura de la visera
+
+  // Ombra
+  c.fillStyle = 'rgba(0,0,0,0.32)';
+  c.beginPath(); c.ellipse(sx, cy+sz*.58, sz*.62, sz*.14, 0, 0, Math.PI*2); c.fill();
+
+  // Cos / espatlles petit (sota el casc)
+  const bTop = hcy + hr * .72;
+  c.fillStyle = outfit + 'bb';
+  c.beginPath(); c.roundRect(sx-sz*.32, bTop, sz*.64, sz*.24, 5); c.fill();
+  c.fillStyle = 'rgba(255,240,80,0.55)';
+  c.fillRect(sx-sz*.27, bTop+sz*.08, sz*.54, sz*.045);
+
+  // Ala del casc (brim: oval ample a l'equador)
+  const brimG = c.createLinearGradient(sx, hcy, sx, hcy+hr*.5);
+  brimG.addColorStop(0, hcol + 'dd'); brimG.addColorStop(1, hcol + '44');
+  c.fillStyle = brimG;
+  c.beginPath(); c.ellipse(sx, hcy+sz*.26, hr+sz*.22, sz*.16, 0, 0, Math.PI*2); c.fill();
+
+  // Ombra de la cúpula
+  c.fillStyle = 'rgba(0,0,0,0.18)';
+  c.beginPath(); c.arc(sx+sz*.07, hcy+sz*.07, hr, 0, Math.PI*2); c.fill();
+
+  // Cúpula principal (gradient radial → efecte 3D)
+  const dg = c.createRadialGradient(sx-hr*.32, hcy-hr*.28, 0, sx, hcy, hr*1.12);
+  dg.addColorStop(0,   hcol);
+  dg.addColorStop(.55, hcol + 'dd');
+  dg.addColorStop(1,   hcol + '55');
+  c.fillStyle = dg;
+  c.beginPath(); c.arc(sx, hcy, hr, 0, Math.PI*2); c.fill();
+
+  // Brillantor especular (punt de llum)
+  c.fillStyle = 'rgba(255,255,255,0.28)';
+  c.beginPath(); c.ellipse(sx-hr*.27, hcy-hr*.27, hr*.3, hr*.17, -.55, 0, Math.PI*2); c.fill();
+
+  // Cara (pell) dins l'obertura de la visera
+  c.fillStyle = skin;
+  c.beginPath(); c.arc(sx, fcy, fr, 0, Math.PI*2); c.fill();
+
+  // Cabell dona (bandes als costats)
+  if(isFem) {
+    c.fillStyle = '#5a3010';
+    c.beginPath(); c.ellipse(sx-fr*.8, fcy+fr*.06, fr*.17, fr*.44, -.28, 0, Math.PI*2); c.fill();
+    c.beginPath(); c.ellipse(sx+fr*.8, fcy+fr*.06, fr*.17, fr*.44, .28, 0, Math.PI*2); c.fill();
+  }
+
+  // Ulls
+  const eyeY = fcy - fr * .13, eyeR = fr * .18;
+  c.fillStyle = '#1a1a2a';
+  c.beginPath(); c.arc(sx-fr*.3, eyeY, eyeR, 0, Math.PI*2); c.fill();
+  c.beginPath(); c.arc(sx+fr*.3, eyeY, eyeR, 0, Math.PI*2); c.fill();
+  // Brillantor dels ulls
+  c.fillStyle = 'rgba(255,255,255,0.85)';
+  c.beginPath(); c.arc(sx-fr*.25, eyeY-eyeR*.32, eyeR*.38, 0, Math.PI*2); c.fill();
+  c.beginPath(); c.arc(sx+fr*.35, eyeY-eyeR*.32, eyeR*.38, 0, Math.PI*2); c.fill();
+
+  // Marc de la visera (anell del casc al voltant de la cara)
+  c.strokeStyle = hcol; c.lineWidth = sz * .11;
+  c.beginPath(); c.arc(sx, fcy, fr+sz*.04, 0, Math.PI*2); c.stroke();
+
+  // Vidre de la visera (tint suau)
+  c.fillStyle = 'rgba(20,40,80,0.11)';
+  c.beginPath(); c.arc(sx, fcy, fr, 0, Math.PI*2); c.fill();
+
+  // Reflux blau del vidre
+  c.fillStyle = 'rgba(120,190,255,0.22)';
+  c.beginPath(); c.ellipse(sx-fr*.2, fcy-fr*.28, fr*.34, fr*.18, -.4, 0, Math.PI*2); c.fill();
+
+  // Cresta central del casc
+  c.strokeStyle = 'rgba(0,0,0,0.22)'; c.lineWidth = sz * .055;
+  c.beginPath(); c.moveTo(sx, hcy-hr*.97); c.lineTo(sx, hcy-hr*.06); c.stroke();
+
+  // Lletra 'B' entre la cresta i la visera
+  c.fillStyle = 'rgba(0,0,0,0.58)';
+  c.font = `bold ${sz*.22}px Orbitron,monospace`;
+  c.textAlign = 'center'; c.textBaseline = 'middle';
+  c.fillText('B', sx, hcy - hr*.17);
+  c.textBaseline = 'alphabetic';
+
+  // Franja reflectora groga a l'ala
+  c.strokeStyle = 'rgba(255,240,80,0.65)'; c.lineWidth = sz * .045;
+  c.beginPath(); c.ellipse(sx, hcy+sz*.26, hr+sz*.13, sz*.1, 0, 0, Math.PI*2); c.stroke();
+}
+
 function drawPlayer(ox,oy) {
   if(builderMode) return;
-  const S=getScale();
-  const sx=player.x*S+ox, sy=player.y*S+oy, sz=P_SIZE*S;
-  const mv=keys['ArrowUp']||keys['ArrowDown']||keys['ArrowLeft']||keys['ArrowRight']||dpKeys.up||dpKeys.down||dpKeys.left||dpKeys.right;
-  const bob=mv?Math.sin(animF*.3)*1.8:0;
-  ctx.fillStyle='rgba(0,0,0,0.32)';
-  ctx.beginPath(); ctx.ellipse(sx,sy+sz*.54,sz*.38,sz*.13,0,0,Math.PI*2); ctx.fill();
-  const bg=ctx.createRadialGradient(sx,sy-bob,0,sx,sy-bob,sz*.54);
-  bg.addColorStop(0,'#ff8c00'); bg.addColorStop(.6,'#cc4400'); bg.addColorStop(1,'#8b1a00');
-  ctx.fillStyle=bg; ctx.beginPath(); ctx.arc(sx,sy-sz*.1-bob,sz*.48,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#ffd700'; ctx.beginPath(); ctx.arc(sx,sy-sz*.4-bob,sz*.29,Math.PI,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#b8860b'; ctx.fillRect(sx-sz*.33,sy-sz*.41-bob,sz*.66,sz*.08);
-  ctx.fillStyle='rgba(0,0,0,0.8)';
-  ctx.beginPath(); ctx.arc(sx-sz*.1,sy-sz*.13-bob,sz*.065,0,Math.PI*2); ctx.arc(sx+sz*.1,sy-sz*.13-bob,sz*.065,0,Math.PI*2); ctx.fill();
+  const S  = getScale();
+  const sx = player.x*S+ox, sy = player.y*S+oy, sz = P_SIZE*S;
+  const mv = keys['ArrowUp']||keys['ArrowDown']||keys['ArrowLeft']||keys['ArrowRight']||dpKeys.up||dpKeys.down||dpKeys.left||dpKeys.right;
+  const bob = mv ? Math.sin(animF*.3)*1.2 : 0;
+  const bS  = bob * S;
+
+  _drawCharHelmet(ctx, sx, sy-bS, sz, playerCfg);
+
+  if(playerCfg.name) {
+    const hr = sz * .68;
+    ctx.fillStyle    = 'rgba(255,220,100,0.92)';
+    ctx.font         = `bold ${sz*.28}px Share Tech Mono,monospace`;
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText(playerCfg.name, sx, sy - sz*.04 - hr - sz*.1 - bS);
+  }
 }
 
 function drawZoomHUD() {}
@@ -745,14 +902,28 @@ function buildSwatches() {
 function selectColor(i){selectedColor=i;buildSwatches();}
 const FURN_ROWS = [
   [
-    { label:'Sala',     keys:['sofa','armchair','tv','coffeetable','rug','lamp','fireplace','painting'] },
-    { label:'Dormitori',keys:['bed','wardrobe','nightstand','mirror'] },
+    { label:'Sala',       keys:['sofa','armchair','tv','coffeetable','rug','lamp','fireplace','painting'] },
+    { label:'Dormitori',  keys:['bed','wardrobe','nightstand','mirror'] },
   ],
   [
-    { label:'Estudi',   keys:['desk','bookcase','piano'] },
-    { label:'Cuina',    keys:['table','fridge','stove','washing','dishwasher'] },
-    { label:'Bany',     keys:['toilet','bath','shower','washbasin'] },
-    { label:'General',  keys:['plant','door'] },
+    { label:'Estudi',     keys:['desk','bookcase','piano'] },
+    { label:'Cuina',      keys:['table','fridge','stove','washing'] },
+    { label:'Bany',       keys:['toilet','bath','shower'] },
+    { label:'General',    keys:['plant','door'] },
+  ],
+  [
+    { label:'Animals',    keys:['lion','elephant','snake','eagle','shark','bull','wolf','dragon','octopus','horse','bear','frog'] },
+  ],
+  [
+    { label:'Cos/Ment',   keys:['brain','eye','skull','heart','bone','hand'] },
+    { label:'Emergències',keys:['firetruck','extinguisher','helmet','explosion','radioactive','biohazard'] },
+  ],
+  [
+    { label:'Natura',     keys:['mountain','volcano','wave','lightning','tornado','tree'] },
+    { label:'Ciència',    keys:['atom','microscope','magnet','gear','battery','circuit','flask'] },
+  ],
+  [
+    { label:'Símbols',    keys:['key','bomb','trophy','sword','shield','crown','anchor','hourglass','compass','map','book','scroll','magnifier','warning'] },
   ],
 ];
 function buildFurniturePicker() {
@@ -768,7 +939,7 @@ function buildFurniturePicker() {
 function selectFurniture(k){
   selectedFurnitureType=k;
   document.querySelectorAll('.furn-chip').forEach(el=>el.classList.toggle('active',el.title===FURNITURE[k].label));
-  showNotif('🪑 '+FURNITURE[k].label+' seleccionat');
+  showNotif('🖼 '+FURNITURE[k].label+' seleccionada');
 }
 
 // ════════════════════════════════════════════════
@@ -784,8 +955,8 @@ function refreshFurnitureSelect() {
   const rid=parseInt(document.getElementById('f-room').value);
   const roomFurn=furniture.filter(f=>f.room===rid);
   document.getElementById('f-furniture').innerHTML=
-    '<option value="">— Sense moble —</option>'+
-    roomFurn.map(f=>`<option value="${f.id}">${FURNITURE[f.type].emoji} ${FURNITURE[f.type].label}</option>`).join('');
+    '<option value="">— Sense imatge —</option>'+
+    roomFurn.map(f=>`<option value="${f.id}">${getFD(f.type).emoji} ${getFD(f.type).label}</option>`).join('');
 }
 function openMemCard(m) {
   if(!m) return; openMem=m;
@@ -818,10 +989,13 @@ function addMemory() {
     let att=0;
     while(occ.some(m=>Math.abs(m.ox-ox)<36&&Math.abs(m.oy-oy)<36)&&att<40){ ox=28+Math.random()*(r.w-56); oy=28+Math.random()*(r.h-56); att++; }
   }
-  memories.push({id:nextMid++,room:rid,cat,title,body,ox:Math.round(ox),oy:Math.round(oy),furnitureId});
+  const image=document.getElementById('f-image').value.trim();
+  memories.push({id:nextMid++,room:rid,cat,title,body,image,ox:Math.round(ox),oy:Math.round(oy),furnitureId});
   save(); renderEditorList();
   document.getElementById('f-title').value='';
   document.getElementById('f-body').value='';
+  document.getElementById('f-image').value='';
+  document.getElementById('f-image-preview').textContent='';
   showNotif('✦ Memòria afegida a '+r.name);
 }
 function deleteMemory(e,id){
@@ -837,13 +1011,13 @@ function teleportTo(id){
   player.x=pos.x+28; player.y=pos.y;
   toggleEditor(); showNotif('📍 '+m.title);
 }
-function toggleEditor(){document.getElementById('editor-panel').classList.toggle('open');refreshRoomSelect();refreshFurnitureSelect();renderEditorList();}
+function toggleEditor(){document.getElementById('editor-panel').classList.toggle('open');refreshRoomSelect();refreshFurnitureSelect();renderEditorList();buildImageSuggestions();}
 function renderEditorList(){
   const el=document.getElementById('ep-list');
   if(!memories.length){el.innerHTML='<p style="color:var(--dim);font-size:11px;text-align:center;padding:18px;">Sense memòries.<br>Afegeix-ne una ↓</p>';return;}
   el.innerHTML=memories.map(m=>{
     const meta=CAT[m.cat],rname=rooms.find(r=>r.id===m.room)?.name||'?';
-    const furnName=m.furnitureId?(()=>{const f=furniture.find(f=>f.id===m.furnitureId);return f?` · ${FURNITURE[f.type].emoji}${FURNITURE[f.type].label}`:''})():'';
+    const furnName=m.furnitureId?(()=>{const f=furniture.find(f=>f.id===m.furnitureId);return f?` · ${getFD(f.type).emoji}${getFD(f.type).label}`:''})():'';
     return `<div class="mi" onclick="teleportTo(${m.id})"><div class="mi-icon">${meta.icon}</div><div class="mi-info"><div class="mi-title">${m.title}</div><div class="mi-room">${rname}${furnName} · ${meta.label}</div></div><button class="mi-del" onclick="deleteMemory(event,${m.id})">✕</button></div>`;
   }).join('');
 }
@@ -1098,6 +1272,106 @@ function startGame(demo){
   }
   frame();
 })();
+
+// ── IMATGE MENTAL ──
+const IMAGE_SUGGESTIONS = [
+  '🧠','🔥','💧','⚡','🏗','🧪','🌊','🌡','💣','🚒','🪖','⚙','🔌','🗺','🌲','🏛','💊','☢','📐','🧲'
+];
+function buildImageSuggestions(){
+  const el=document.getElementById('image-suggestions'); if(!el) return;
+  el.innerHTML=IMAGE_SUGGESTIONS.map(e=>`<span class="img-sug" onclick="pickImage('${e}')">${e}</span>`).join('');
+}
+function pickImage(emoji){
+  document.getElementById('f-image').value=emoji;
+  document.getElementById('f-image-preview').textContent=emoji;
+}
+function updateImagePreview(){
+  const v=document.getElementById('f-image').value;
+  document.getElementById('f-image-preview').textContent=v;
+}
+
+// ════════════════════════════════════════════════
+//  PLAYER CUSTOMIZER
+// ════════════════════════════════════════════════
+const SKIN_COLORS   = ['#f0c080','#d4956a','#c07840','#7a4820','#3a2010','#ffd0a0'];
+const OUTFIT_COLORS = ['#e8a020','#d03030','#2060c0','#208040','#101010','#6030a0','#208090','#c04090'];
+const HELMET_COLORS = ['#e8a020','#f0f0f0','#d03030','#2050b0','#101010','#30a060'];
+
+let _pTmp = {};  // temp config while modal is open
+
+function openPlayerCustomizer() {
+  _pTmp = { ...playerCfg };
+  document.getElementById('p-name').value = playerCfg.name || '';
+  _buildSwatches('skin-swatches',   SKIN_COLORS,   'skin');
+  _buildSwatches('outfit-swatches', OUTFIT_COLORS, 'outfit');
+  _buildSwatches('helmet-swatches', HELMET_COLORS, 'helmetColor');
+  _updateGenderBtns();
+  previewPlayer();
+  document.getElementById('player-modal').classList.add('visible');
+}
+
+function closePlayerCustomizer() {
+  document.getElementById('player-modal').classList.remove('visible');
+}
+
+function savePlayerCustomizer() {
+  _pTmp.name = document.getElementById('p-name').value.trim().slice(0,16);
+  playerCfg = { ...playerCfg, ..._pTmp };
+  savePlayerCfg();
+  closePlayerCustomizer();
+}
+
+function setPGender(g) {
+  _pTmp.gender = g;
+  _updateGenderBtns();
+  previewPlayer();
+}
+
+function _updateGenderBtns() {
+  document.getElementById('pgender-m').classList.toggle('active', _pTmp.gender==='m');
+  document.getElementById('pgender-f').classList.toggle('active', _pTmp.gender==='f');
+}
+
+function _buildSwatches(containerId, colors, field) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = colors.map(c =>
+    `<div class="pcolor-swatch${_pTmp[field]===c?' selected':''}" style="background:${c}" title="${c}"
+      onclick="_pickColor('${field}','${c}','${containerId}')"></div>`
+  ).join('');
+}
+
+function _pickColor(field, color, containerId) {
+  _pTmp[field] = color;
+  // update selected state
+  document.querySelectorAll(`#${containerId} .pcolor-swatch`).forEach(el => {
+    el.classList.toggle('selected', el.style.background === color || el.style.backgroundColor === color);
+  });
+  previewPlayer();
+}
+
+function previewPlayer() {
+  const pc = document.getElementById('pmodal-canvas');
+  if(!pc) return;
+  const pctx = pc.getContext('2d');
+  pctx.clearRect(0, 0, 120, 160);
+
+  const name = (document.getElementById('p-name')?.value||'').trim();
+  const cfg  = { ..._pTmp, name };
+
+  // Centrat al canvas de 120×160 — sz gran per omplir l'espai
+  const sx = 60, cy = 90, sz = 20;
+
+  _drawCharHelmet(pctx, sx, cy, sz, cfg);
+
+  if(name) {
+    const hr = sz * .68;
+    pctx.fillStyle    = 'rgba(255,220,100,0.92)';
+    pctx.font         = `bold ${sz*.28}px Share Tech Mono,monospace`;
+    pctx.textAlign    = 'center';
+    pctx.textBaseline = 'alphabetic';
+    pctx.fillText(name.slice(0,12), sx, cy - sz*.04 - hr - sz*.1);
+  }
+}
 
 function confirmNewPalace(){
   if(confirm('Segur que vols esborrar el palau actual i començar de zero?')){

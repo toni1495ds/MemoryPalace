@@ -67,6 +67,7 @@
           <button class="btn-hud btn-hud-dim" id="btn-speed" onclick="cycleSpeed()">🐢 2.2</button>
           <button class="btn-hud btn-hud-blue" id="btn-build" onclick="toggleBuilder()">🏗 CONSTRUIR</button>
           <button class="btn-hud btn-hud-fire" onclick="toggleEditor()">✏ MEMÒRIES</button>
+          <button class="btn-hud btn-hud-dim" onclick="openPlayerCustomizer()" title="Personalitzar personatge">🧑‍🚒</button>
         </div>
       </div>
 
@@ -81,7 +82,7 @@
           <span class="bbar-label">🏗 CONSTRUCTOR</span>
           <div class="bbar-sep"></div>
           <button class="bbar-btn draw active" id="tool-draw"      onclick="setTool('draw')">✦ DIBUIXAR</button>
-          <button class="bbar-btn furn"        id="tool-furniture" onclick="setTool('furniture')">🪑 MOBLE</button>
+          <button class="bbar-btn furn"        id="tool-furniture" onclick="setTool('furniture')">🖼 IMATGE</button>
           <button class="bbar-btn movemem"     id="tool-movemem"   onclick="setTool('movemem')">✥ MOURE MEM.</button>
           <button class="bbar-btn erase"       id="tool-erase"     onclick="setTool('erase')">✕ ESBORRAR</button>
           <button class="bbar-btn rename"                          onclick="renameSelected()">✏ RENOMBRAR</button>
@@ -133,7 +134,7 @@
         <div class="ep-add">
           <h3>+ Nova memòria</h3>
           <div class="frow"><label>Habitació</label><select id="f-room" onchange="refreshFurnitureSelect()"></select></div>
-          <div class="frow"><label>Moble (opc.)</label><select id="f-furniture"><option value="">— Sense moble —</option></select></div>
+          <div class="frow"><label>Imatge (opc.)</label><select id="f-furniture"><option value="">— Sense imatge —</option></select></div>
           <div class="frow">
             <label>Categoria</label>
             <select id="f-cat">
@@ -208,6 +209,51 @@
       </div>
 
       <div id="notif"></div>
+
+      <!-- Player customizer modal -->
+      <div id="player-modal">
+        <div class="pmodal-box">
+          <div class="pmodal-head">
+            <span>🧑‍🚒 PERSONATGE</span>
+            <button class="mclose" onclick="closePlayerCustomizer()">✕</button>
+          </div>
+          <div class="pmodal-body">
+            <div class="pmodal-preview" id="pmodal-canvas-wrap">
+              <canvas id="pmodal-canvas" width="120" height="160"></canvas>
+            </div>
+            <div class="pmodal-fields">
+              <div class="frow">
+                <label>Gènere</label>
+                <div class="pgender-btns">
+                  <button id="pgender-m" class="pgender-btn active" onclick="setPGender('m')">♂ Home</button>
+                  <button id="pgender-f" class="pgender-btn" onclick="setPGender('f')">♀ Dona</button>
+                </div>
+              </div>
+              <div class="frow">
+                <label>Nom (opc.)</label>
+                <input id="p-name" type="text" placeholder="El teu nom…" maxlength="16" oninput="previewPlayer()" />
+              </div>
+              <div class="frow">
+                <label>Color de pell</label>
+                <div class="pcolor-row" id="skin-swatches"></div>
+              </div>
+              <div class="frow">
+                <label>Color granota</label>
+                <div class="pcolor-row" id="outfit-swatches"></div>
+              </div>
+              <div class="frow">
+                <label>Color casc</label>
+                <div class="pcolor-row" id="helmet-swatches"></div>
+              </div>
+            </div>
+          </div>
+          <div class="pmodal-footer">
+            <button class="btn-secondary" onclick="closePlayerCustomizer()">Cancel·lar</button>
+            <button class="btn-primary" style="padding:8px 22px;font-size:11px;" onclick="savePlayerCustomizer()">Desar</button>
+          </div>
+        </div>
+      </div>
+
     </div><!-- /game -->
 
     <script src="game.js"></script>
