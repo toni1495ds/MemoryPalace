@@ -1770,283 +1770,169 @@ function drawMemories(ox, oy) {
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════
-//  PATCH per game.js — Personatge bomber millorat
-//
-//  INSTRUCCIONS:
-//  1. Obre game.js
-//  2. Busca la funció "function _lighten" (o si no existeix, busca
-//     "function _drawCharHelmet")
-//  3. Substitueix TOT el bloc des de "_lighten" fins al final de
-//     "_drawCharHelmet" (inclòs) per el codi d'aquest fitxer.
-// ═══════════════════════════════════════════════════════════════════
-
-// ── Helpers de color ──────────────────────────────────────────────
+// ════════════════════════════════════════════════
+//  COLOR HELPERS
+// ════════════════════════════════════════════════
 function _lighten(hex, amt) {
   try {
-    const r = parseInt(hex.slice(1, 3), 16),
-      g = parseInt(hex.slice(3, 5), 16),
-      b = parseInt(hex.slice(5, 7), 16);
-    return `rgb(${Math.min(255, (r + amt * 255) | 0)},${Math.min(255, (g + amt * 255) | 0)},${Math.min(255, (b + amt * 255) | 0)})`;
-  } catch (e) {
-    return hex;
-  }
+    const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+    return `rgb(${Math.min(255,(r+amt*255)|0)},${Math.min(255,(g+amt*255)|0)},${Math.min(255,(b+amt*255)|0)})`;
+  } catch(e){ return hex; }
 }
 function _darken(hex, amt) {
   try {
-    const r = parseInt(hex.slice(1, 3), 16),
-      g = parseInt(hex.slice(3, 5), 16),
-      b = parseInt(hex.slice(5, 7), 16);
-    return `rgb(${Math.max(0, (r - amt * 255) | 0)},${Math.max(0, (g - amt * 255) | 0)},${Math.max(0, (b - amt * 255) | 0)})`;
-  } catch (e) {
-    return hex;
-  }
+    const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+    return `rgb(${Math.max(0,(r-amt*255)|0)},${Math.max(0,(g-amt*255)|0)},${Math.max(0,(b-amt*255)|0)})`;
+  } catch(e){ return hex; }
 }
 
-// ── Dibuix compartit del personatge (top-down, vista cenital) ─────
-// sx,sy = centre del personatge en píxels pantalla
-// sz    = P_SIZE * getScale()  (mida base × zoom)
-// cfg   = { gender, skin, outfit, helmetColor, name }
+// ════════════════════════════════════════════════
+//  DRAW — BOMBER TOP-DOWN
+//  c   = CanvasRenderingContext2D
+//  sx  = centre X (píxels pantalla)
+//  cy  = centre Y (píxels pantalla)
+//  sz  = P_SIZE * getScale()
+//  cfg = { gender, skin, outfit, helmetColor, name }
+// ════════════════════════════════════════════════
 function _drawCharHelmet(c, sx, cy, sz, cfg) {
-  const helmR = sz * 0.82; // radi del casc (domina la vista)
-  const visR = sz * 0.38; // radi de l'obertura de la visera
-  const visOY = sz * 0.1; // la visera queda una mica cap avall
+  const r = sz * 0.9;  // radi total del personatge
 
-  // ── Ombra del personatge al terra ──
-  c.fillStyle = "rgba(0,0,0,0.32)";
+  // ── 1. Ombra al terra ──
+  c.save();
+  c.globalAlpha = 0.38;
+  c.fillStyle = '#000';
   c.beginPath();
-  c.ellipse(
-    sx + sz * 0.07,
-    cy + sz * 0.09,
-    helmR * 0.88,
-    helmR * 0.65,
-    0,
-    0,
-    Math.PI * 2,
-  );
+  c.ellipse(sx + r*0.08, cy + r*0.12, r*0.85, r*0.58, 0, 0, Math.PI*2);
   c.fill();
+  c.restore();
 
-  // ── Cos / granota (anell visible als marges del casc) ──
+  // ── 2. Cos / granota (anell exterior visible sota el casc) ──
+  c.beginPath();
+  c.arc(sx, cy, r * 0.68, 0, Math.PI*2);
   c.fillStyle = cfg.outfit;
-  c.beginPath();
-  c.arc(sx, cy, helmR * 0.7, 0, Math.PI * 2);
   c.fill();
 
-  // Franges reflectores de la granota (norma de seguretat)
-  c.strokeStyle = "rgba(255,240,70,0.75)";
-  c.lineWidth = sz * 0.055;
-  c.beginPath();
-  c.arc(sx, cy, helmR * 0.6, Math.PI * 0.25, Math.PI * 0.85);
-  c.stroke();
-  c.beginPath();
-  c.arc(sx, cy, helmR * 0.6, Math.PI * 1.15, Math.PI * 1.75);
-  c.stroke();
+  // Franges reflectores de seguretat a la granota
+  c.strokeStyle = 'rgba(255,235,50,0.75)';
+  c.lineWidth = r * 0.065;
+  c.beginPath(); c.arc(sx, cy, r*0.55, Math.PI*0.30, Math.PI*0.88); c.stroke();
+  c.beginPath(); c.arc(sx, cy, r*0.55, Math.PI*1.12, Math.PI*1.70); c.stroke();
 
-  // ── Casc: ombra interior (profunditat) ──
-  c.fillStyle = "rgba(0,0,0,0.22)";
-  c.beginPath();
-  c.arc(sx + sz * 0.05, cy + sz * 0.05, helmR, 0, Math.PI * 2);
-  c.fill();
-
-  // ── Casc: cos principal amb gradient radial 3D ──
+  // ── 3. Casc principal ──
+  // Gradient radial: llum des de dalt-esquerra → esfera 3D
   const hg = c.createRadialGradient(
-    sx - helmR * 0.32,
-    cy - helmR * 0.32,
-    0,
-    sx,
-    cy,
-    helmR * 1.05,
+    sx - r*0.30, cy - r*0.30, r*0.04,
+    sx + r*0.08, cy + r*0.08, r*1.08
   );
-  hg.addColorStop(0, _lighten(cfg.helmetColor, 0.48));
-  hg.addColorStop(0.35, cfg.helmetColor);
-  hg.addColorStop(0.75, _darken(cfg.helmetColor, 0.3));
-  hg.addColorStop(1, _darken(cfg.helmetColor, 0.6));
+  hg.addColorStop(0,    _lighten(cfg.helmetColor, 0.55));
+  hg.addColorStop(0.28, _lighten(cfg.helmetColor, 0.18));
+  hg.addColorStop(0.62, cfg.helmetColor);
+  hg.addColorStop(1,    _darken(cfg.helmetColor, 0.52));
+
+  c.beginPath();
+  c.arc(sx, cy, r, 0, Math.PI*2);
   c.fillStyle = hg;
-  c.beginPath();
-  c.arc(sx, cy, helmR, 0, Math.PI * 2);
   c.fill();
 
-  // ── Casc: bora/ala (anell extern fosc) ──
-  c.strokeStyle = _darken(cfg.helmetColor, 0.25);
-  c.lineWidth = sz * 0.09;
+  // Bora/ala del casc (anell fosc exterior)
   c.beginPath();
-  c.arc(sx, cy, helmR * 0.975, 0, Math.PI * 2);
+  c.arc(sx, cy, r * 0.975, 0, Math.PI*2);
+  c.strokeStyle = _darken(cfg.helmetColor, 0.38);
+  c.lineWidth   = r * 0.09;
   c.stroke();
 
-  // ── Casc: franja reflectora groga horitzontal ──
-  c.strokeStyle = "rgba(255,235,50,0.80)";
-  c.lineWidth = sz * 0.065;
+  // Franja reflectora groga del casc
   c.beginPath();
-  c.arc(sx, cy, helmR * 0.76, 0, Math.PI * 2);
+  c.arc(sx, cy, r * 0.73, 0, Math.PI*2);
+  c.strokeStyle = 'rgba(255,232,40,0.78)';
+  c.lineWidth   = r * 0.068;
   c.stroke();
 
-  // ── Visera: fons fosc (sembla profunditat) ──
-  c.fillStyle = "rgba(4,6,18,0.90)";
+  // Brillantor especular (punt de llum alt-esquerre)
+  const sg = c.createRadialGradient(sx-r*0.36, cy-r*0.36, 0, sx-r*0.18, cy-r*0.18, r*0.46);
+  sg.addColorStop(0,   'rgba(255,255,255,0.52)');
+  sg.addColorStop(0.5, 'rgba(255,255,255,0.12)');
+  sg.addColorStop(1,   'rgba(255,255,255,0)');
+  c.beginPath(); c.arc(sx, cy, r, 0, Math.PI*2);
+  c.fillStyle = sg; c.fill();
+
+  // ── 4. Visera: oval a la meitat inferior del casc ──
+  const visW = r * 0.54;
+  const visH = r * 0.37;
+  const visY = cy + r*0.13;
+
+  // Fons fosc de la visera
   c.beginPath();
-  c.arc(sx, cy + visOY, visR, 0, Math.PI * 2);
+  c.ellipse(sx, visY, visW, visH, 0, 0, Math.PI*2);
+  c.fillStyle = 'rgba(3,4,14,0.94)';
   c.fill();
 
-  // ── Cara (pell visible dins la visera) ──
+  // Cara (pell) dins la visera
+  c.beginPath();
+  c.ellipse(sx, visY + r*0.025, visW*0.80, visH*0.82, 0, 0, Math.PI*2);
   c.fillStyle = cfg.skin;
-  c.beginPath();
-  c.arc(sx, cy + visOY + sz * 0.03, visR * 0.74, 0, Math.PI * 2);
   c.fill();
 
-  // ── Cabell (dona: visible als costats de la visera) ──
-  if (cfg.gender === "f") {
-    c.fillStyle = "#3a1e08";
-    const hairY = cy + visOY + sz * 0.1;
-    c.beginPath();
-    c.arc(sx - visR * 0.82, hairY, visR * 0.3, 0, Math.PI * 2);
-    c.fill();
-    c.beginPath();
-    c.arc(sx + visR * 0.82, hairY, visR * 0.3, 0, Math.PI * 2);
-    c.fill();
-    c.beginPath();
-    c.ellipse(
-      sx - visR * 0.72,
-      hairY - visR * 0.08,
-      visR * 0.14,
-      visR * 0.38,
-      -0.3,
-      0,
-      Math.PI * 2,
-    );
-    c.fill();
-    c.beginPath();
-    c.ellipse(
-      sx + visR * 0.72,
-      hairY - visR * 0.08,
-      visR * 0.14,
-      visR * 0.38,
-      0.3,
-      0,
-      Math.PI * 2,
-    );
-    c.fill();
+  // Cabell (dona: mechons als costats de la visera)
+  if(cfg.gender === 'f') {
+    c.fillStyle = '#3a1e08';
+    c.beginPath(); c.ellipse(sx - visW*0.84, visY+r*0.06, visW*0.20, visH*0.50, -0.28, 0, Math.PI*2); c.fill();
+    c.beginPath(); c.ellipse(sx + visW*0.84, visY+r*0.06, visW*0.20, visH*0.50,  0.28, 0, Math.PI*2); c.fill();
   }
 
-  // ── Ulls ──
-  const eyeY = cy + visOY - sz * 0.04;
-  const eyeR = sz * 0.082;
-  const eyeOff = sz * 0.165;
+  // ── 5. Ulls ──
+  const eyeR  = r * 0.085;
+  const eyeOX = visW * 0.37;
+  const eyeY  = visY - visH*0.12;
 
   // Blancs
-  c.fillStyle = "#eef3ff";
-  c.beginPath();
-  c.arc(sx - eyeOff, eyeY, eyeR, 0, Math.PI * 2);
-  c.fill();
-  c.beginPath();
-  c.arc(sx + eyeOff, eyeY, eyeR, 0, Math.PI * 2);
-  c.fill();
+  c.fillStyle = '#edf2ff';
+  c.beginPath(); c.arc(sx - eyeOX, eyeY, eyeR, 0, Math.PI*2); c.fill();
+  c.beginPath(); c.arc(sx + eyeOX, eyeY, eyeR, 0, Math.PI*2); c.fill();
 
-  // Pupil·les (mirada lleugerament cap endavant)
-  c.fillStyle = "#18102e";
-  c.beginPath();
-  c.arc(
-    sx - eyeOff + eyeR * 0.14,
-    eyeY + eyeR * 0.1,
-    eyeR * 0.56,
-    0,
-    Math.PI * 2,
-  );
-  c.fill();
-  c.beginPath();
-  c.arc(
-    sx + eyeOff + eyeR * 0.14,
-    eyeY + eyeR * 0.1,
-    eyeR * 0.56,
-    0,
-    Math.PI * 2,
-  );
-  c.fill();
+  // Iris verd
+  c.fillStyle = '#2a5520';
+  c.beginPath(); c.arc(sx - eyeOX + eyeR*0.1, eyeY + eyeR*0.08, eyeR*0.62, 0, Math.PI*2); c.fill();
+  c.beginPath(); c.arc(sx + eyeOX + eyeR*0.1, eyeY + eyeR*0.08, eyeR*0.62, 0, Math.PI*2); c.fill();
+
+  // Pupil·les
+  c.fillStyle = '#05030a';
+  c.beginPath(); c.arc(sx - eyeOX + eyeR*0.12, eyeY + eyeR*0.10, eyeR*0.37, 0, Math.PI*2); c.fill();
+  c.beginPath(); c.arc(sx + eyeOX + eyeR*0.12, eyeY + eyeR*0.10, eyeR*0.37, 0, Math.PI*2); c.fill();
 
   // Brillantor dels ulls
-  c.fillStyle = "rgba(255,255,255,0.88)";
-  c.beginPath();
-  c.arc(
-    sx - eyeOff - eyeR * 0.18,
-    eyeY - eyeR * 0.26,
-    eyeR * 0.27,
-    0,
-    Math.PI * 2,
-  );
-  c.fill();
-  c.beginPath();
-  c.arc(
-    sx + eyeOff - eyeR * 0.18,
-    eyeY - eyeR * 0.26,
-    eyeR * 0.27,
-    0,
-    Math.PI * 2,
-  );
-  c.fill();
+  c.fillStyle = 'rgba(255,255,255,0.88)';
+  c.beginPath(); c.arc(sx - eyeOX - eyeR*0.18, eyeY - eyeR*0.26, eyeR*0.27, 0, Math.PI*2); c.fill();
+  c.beginPath(); c.arc(sx + eyeOX - eyeR*0.18, eyeY - eyeR*0.26, eyeR*0.27, 0, Math.PI*2); c.fill();
 
-  // ── Nas ──
-  c.fillStyle = _darken(cfg.skin, 0.18) + "bb";
-  c.beginPath();
-  c.arc(sx, eyeY + eyeR * 1.55, eyeR * 0.36, 0, Math.PI * 2);
-  c.fill();
+  // Nas
+  c.fillStyle = _darken(cfg.skin, 0.14) + 'cc';
+  c.beginPath(); c.arc(sx, eyeY + eyeR*1.65, eyeR*0.34, 0, Math.PI*2); c.fill();
 
-  // ── Marc metàl·lic de la visera ──
-  c.strokeStyle = _darken(cfg.helmetColor, 0.15);
-  c.lineWidth = sz * 0.065;
+  // ── 6. Marc metàl·lic de la visera ──
   c.beginPath();
-  c.arc(sx, cy + visOY, visR + sz * 0.035, 0, Math.PI * 2);
+  c.ellipse(sx, visY, visW + r*0.038, visH + r*0.038, 0, 0, Math.PI*2);
+  c.strokeStyle = _darken(cfg.helmetColor, 0.18);
+  c.lineWidth   = r * 0.065;
   c.stroke();
 
-  // ── Reflex de vidre a la visera ──
-  const vg = c.createRadialGradient(
-    sx - visR * 0.22,
-    cy + visOY - visR * 0.15,
-    0,
-    sx,
-    cy + visOY,
-    visR,
-  );
-  vg.addColorStop(0, "rgba(140,200,255,0.22)");
-  vg.addColorStop(0.5, "rgba(80,140,255,0.06)");
-  vg.addColorStop(1, "rgba(0,0,0,0)");
-  c.fillStyle = vg;
-  c.beginPath();
-  c.arc(sx, cy + visOY, visR, 0, Math.PI * 2);
-  c.fill();
+  // Reflex de vidre a la visera (degradat blau subtil)
+  const vg = c.createRadialGradient(sx - visW*0.24, visY - visH*0.28, 0, sx, visY, visW*0.95);
+  vg.addColorStop(0,    'rgba(150,205,255,0.26)');
+  vg.addColorStop(0.55, 'rgba(70,140,255,0.07)');
+  vg.addColorStop(1,    'rgba(0,0,0,0)');
+  c.beginPath(); c.ellipse(sx, visY, visW, visH, 0, 0, Math.PI*2);
+  c.fillStyle = vg; c.fill();
 
-  // ── Brillantor especular del casc (punt de llum alt-esquerre) ──
-  const sg = c.createRadialGradient(
-    sx - helmR * 0.38,
-    cy - helmR * 0.38,
-    0,
-    sx - helmR * 0.22,
-    cy - helmR * 0.22,
-    helmR * 0.38,
-  );
-  sg.addColorStop(0, "rgba(255,255,255,0.46)");
-  sg.addColorStop(0.5, "rgba(255,255,255,0.12)");
-  sg.addColorStop(1, "rgba(255,255,255,0)");
-  c.fillStyle = sg;
-  c.beginPath();
-  c.arc(sx, cy, helmR, 0, Math.PI * 2);
-  c.fill();
+  // ── 7. Lletra 'B' al front del casc ──
+  c.fillStyle    = 'rgba(0,0,0,0.50)';
+  c.font         = `bold ${r*0.26}px Orbitron,monospace`;
+  c.textAlign    = 'center';
+  c.textBaseline = 'middle';
+  c.fillText('B', sx, cy - r*0.48);
+  c.textBaseline = 'alphabetic';
 
-  // ── Lletra 'B' al front del casc ──
-  c.fillStyle = "rgba(0,0,0,0.52)";
-  c.font = `bold ${sz * 0.22}px Orbitron,monospace`;
-  c.textAlign = "center";
-  c.textBaseline = "middle";
-  c.fillText("B", sx, cy - helmR * 0.46);
-  c.textBaseline = "alphabetic";
-
-  // ── Nom del personatge (a dalt del casc) ──
-  if (cfg.name) {
-    c.fillStyle = "rgba(255,220,100,0.92)";
-    c.font = `bold ${sz * 0.27}px Share Tech Mono,monospace`;
-    c.textAlign = "center";
-    c.textBaseline = "alphabetic";
-    c.fillText(cfg.name, sx, cy - helmR - sz * 0.12);
-  }
 }
-
 function drawPlayer(ox, oy) {
   if (builderMode) return;
   const S = getScale();
@@ -2456,14 +2342,12 @@ function addMemory() {
       att++;
     }
   }
-  const image = document.getElementById("f-image").value.trim();
   memories.push({
     id: nextMid++,
     room: rid,
     cat,
     title,
     body,
-    image,
     ox: Math.round(ox),
     oy: Math.round(oy),
     furnitureId,
@@ -2472,8 +2356,6 @@ function addMemory() {
   renderEditorList();
   document.getElementById("f-title").value = "";
   document.getElementById("f-body").value = "";
-  document.getElementById("f-image").value = "";
-  document.getElementById("f-image-preview").textContent = "";
   showNotif("✦ Memòria afegida a " + r.name);
 }
 function deleteMemory(e, id) {
