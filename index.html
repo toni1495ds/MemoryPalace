@@ -10,17 +10,34 @@
 
     <!-- ═══════════ INTRO ═══════════ -->
     <div class="screen" id="intro">
+
+      <!-- Plànol animat de fons -->
+      <div class="palace-blueprint" aria-hidden="true">
+        <div class="bp-room bp-r1"><span>🛋</span></div>
+        <div class="bp-room bp-r2"><span>📚</span></div>
+        <div class="bp-room bp-r3"><span>🪟</span></div>
+        <div class="bp-room bp-r4"><span>🔥</span></div>
+        <div class="bp-room bp-r5"><span>⚗️</span></div>
+        <div class="bp-corridor bp-c1"></div>
+        <div class="bp-corridor bp-c2"></div>
+        <div class="bp-dot" style="top:38%;left:30%"></div>
+        <div class="bp-dot" style="top:55%;left:62%"></div>
+        <div class="bp-dot" style="top:25%;left:55%"></div>
+      </div>
+
+      <!-- Partícules de foc -->
+      <canvas id="spark-canvas" aria-hidden="true"></canvas>
+
       <div class="fire-icon">🔥</div>
       <h1>PALAU DE CRISTALL</h1>
-      <p>
-        Construeix el teu món. Omple'l de records.<br />
+      <p class="intro-tagline">El teu univers. La teva ment.</p>
+      <p class="intro-desc">
         Cada racó, un concepte. Cada porta, una idea.<br />
         Entra, explora i mai més oblidis res.
       </p>
-      <div class="intro-btns">
-        <button class="btn-primary" onclick="startGame(false)">🏠 CONSTRUIR EL MEU PIS</button>
-        <button class="btn-secondary" onclick="startGame(true)">▶ Usar pis d'exemple</button>
-      </div>
+      <div class="intro-btns" id="intro-btns"></div>
+      <div class="intro-stats" id="intro-stats"></div>
+      <div class="intro-version">v2.0 · Opos Bomber</div>
     </div>
 
     <!-- ═══════════ GAME ═══════════ -->
@@ -36,7 +53,7 @@
         <div class="hud-right">
           <!-- Zoom -->
           <button class="btn-hud btn-hud-dim" onclick="zoomOut()" title="Allunyar (-)">－</button>
-          <button class="btn-hud btn-hud-dim" onclick="zoomReset()" title="Zoom 100% (0)">⊙</button>
+          <button class="btn-hud btn-hud-dim" id="btn-zoom-pct" onclick="zoomReset()" title="Restablir zoom (0)">150%</button>
           <button class="btn-hud btn-hud-dim" onclick="zoomIn()"  title="Apropar (+)">＋</button>
           <div class="hud-sep"></div>
           <!-- Export / Import -->
@@ -45,6 +62,7 @@
           <div class="hud-sep"></div>
           <!-- Quiz -->
           <button class="btn-hud btn-hud-gold" onclick="startQuiz()">🧠 REPÀS</button>
+          <button class="btn-hud btn-hud-gold" onclick="openStats()">📊 STATS</button>
           <div class="hud-sep"></div>
           <button class="btn-hud btn-hud-dim" id="btn-speed" onclick="cycleSpeed()">🐢 2.2</button>
           <button class="btn-hud btn-hud-blue" id="btn-build" onclick="toggleBuilder()">🏗 CONSTRUIR</button>
@@ -90,7 +108,6 @@
           <span id="hint-explore"><kbd>↑↓←→</kbd> Moure &nbsp;·&nbsp; <kbd>E</kbd> Interactuar<br />
           Apropa't als objectes brillants ✦<br /></span>
           <span id="hint-builder" style="display:none">Arrossega per dibuixar &nbsp;·&nbsp; <kbd>↑↓←→</kbd> Navegar<br /></span>
-          <kbd>+</kbd><kbd>-</kbd> Zoom &nbsp;·&nbsp; <kbd>Scroll</kbd> Zoom ràpid
         </div>
         <div style="width:110px"></div>
       </div>
@@ -120,10 +137,15 @@
           <div class="frow">
             <label>Categoria</label>
             <select id="f-cat">
-              <option value="ley">⚖ Legislació</option>
-              <option value="proc">🔧 Procediment</option>
-              <option value="dato">📊 Dada / Xifra</option>
-              <option value="temario">📚 Temari</option>
+              <option value="leg_gen">⚖ Legislació General</option>
+              <option value="leg_bom">🚒 Legislació Bombers</option>
+              <option value="ciencies">🔬 Ciències Bàsiques</option>
+              <option value="foc">🔥 Foc i Extinció</option>
+              <option value="risc">☣ Risc Químic i Sanitari</option>
+              <option value="mecanica">⚙ Mecànica i Vehicles</option>
+              <option value="instal">🔌 Instal·lacions</option>
+              <option value="const_">🏗 Construcció</option>
+              <option value="territori">🌍 Territori i Natura</option>
             </select>
           </div>
           <div class="frow"><label>Títol</label><input id="f-title" type="text" placeholder="Ex: Art. 23 LPRL" /></div>
@@ -164,12 +186,24 @@
             <button id="quiz-show-btn"  class="btn-primary"  onclick="showQuizAnswer()" style="font-size:11px;padding:9px 28px;">👁 Veure resposta</button>
 
             <div id="quiz-result-btns" style="display:none">
-              <button class="btn-quiz-wrong" onclick="quizResult(false)">✕ No ho sabia</button>
-              <button class="btn-quiz-right" onclick="quizResult(true)">✓ Ho sabia!</button>
+              <button class="btn-quiz-forgot" onclick="quizResult('forgot')">✕ No ho sabia</button>
+              <button class="btn-quiz-hard"   onclick="quizResult('hard')">≈ Difícil</button>
+              <button class="btn-quiz-easy"   onclick="quizResult('easy')">✓ Fàcil</button>
             </div>
 
             <button id="quiz-end-btn" class="btn-primary" onclick="closeQuiz()" style="display:none;font-size:11px;padding:9px 28px;">Tancar</button>
           </div>
+        </div>
+      </div>
+
+      <!-- Stats overlay -->
+      <div id="stats-overlay">
+        <div id="stats-box">
+          <div id="stats-header">
+            <span class="quiz-title">📊 ESTADÍSTIQUES D'ESTUDI</span>
+            <button class="mclose" onclick="closeStats()" style="position:relative;top:0;right:0;">✕</button>
+          </div>
+          <div id="stats-body"></div>
         </div>
       </div>
 

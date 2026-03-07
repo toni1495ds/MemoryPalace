@@ -24,10 +24,15 @@ const PALETTE = [
 ];
 
 const CAT = {
-  ley:     { label:'LEGISLACIÓ',   cls:'tag-ley',     icon:'⚖'  },
-  proc:    { label:'PROCEDIMENT',  cls:'tag-proc',    icon:'🔧' },
-  dato:    { label:'DADA / XIFRA', cls:'tag-dato',    icon:'📊' },
-  temario: { label:'TEMARI',       cls:'tag-temario', icon:'📚' },
+  leg_gen:  { label:'LEGISLACIÓ GENERAL',    cls:'tag-leg_gen',  icon:'⚖'  },
+  leg_bom:  { label:'LEGISLACIÓ BOMBERS',    cls:'tag-leg_bom',  icon:'🚒' },
+  ciencies: { label:'CIÈNCIES BÀSIQUES',     cls:'tag-ciencies', icon:'🔬' },
+  foc:      { label:'FOC I EXTINCIÓ',        cls:'tag-foc',      icon:'🔥' },
+  risc:     { label:'RISC QUÍMIC I SANITARI',cls:'tag-risc',     icon:'☣'  },
+  mecanica: { label:'MECÀNICA I VEHICLES',   cls:'tag-mecanica', icon:'⚙'  },
+  instal:   { label:'INSTAL·LACIONS',        cls:'tag-instal',   icon:'🔌' },
+  const_:   { label:'CONSTRUCCIÓ',           cls:'tag-const_',   icon:'🏗' },
+  territori:{ label:'TERRITORI I NATURA',    cls:'tag-territori', icon:'🌍' },
 };
 
 const FURNITURE = {
@@ -82,7 +87,7 @@ let selectedFurnitureId=null;
 let draggingMem=null, dragMemOffX=0, dragMemOffY=0;
 
 // Zoom
-let zoomLevel = 1.0;          // multiplier on BASE_SCALE
+let zoomLevel = 1.5;          // multiplier on BASE_SCALE
 const ZOOM_MIN=0.4, ZOOM_MAX=3.0, ZOOM_STEP=0.2;
 function getScale() { return BASE_SCALE * zoomLevel; }
 
@@ -96,7 +101,10 @@ const canvas = document.getElementById('gc');
 const ctx    = canvas.getContext('2d');
 
 // ── Quiz state ──
-let quizMode=false, quizQueue=[], quizCurrent=null, quizCorrect=0, quizTotal=0;
+let quizMode=false, quizQueue=[], quizCurrent=null, quizCorrect=0, quizForgot=0, quizTotal=0;
+
+// Study stats per category { correct, total }
+let studyStats = { leg_gen:{correct:0,total:0}, leg_bom:{correct:0,total:0}, ciencies:{correct:0,total:0}, foc:{correct:0,total:0}, risc:{correct:0,total:0}, mecanica:{correct:0,total:0}, instal:{correct:0,total:0}, const_:{correct:0,total:0}, territori:{correct:0,total:0} };
 
 // ════════════════════════════════════════════════
 //  PERSISTENCE
@@ -109,6 +117,7 @@ function save() {
     localStorage.setItem('pc_rid',   nextRid);
     localStorage.setItem('pc_mid',   nextMid);
     localStorage.setItem('pc_fid',   nextFid);
+    localStorage.setItem('pc_stats', JSON.stringify(studyStats));
   } catch(e){}
 }
 function load() {
@@ -122,6 +131,8 @@ function load() {
     nextRid=parseInt(localStorage.getItem('pc_rid')||'1');
     nextMid=parseInt(localStorage.getItem('pc_mid')||'1');
     nextFid=parseInt(localStorage.getItem('pc_fid')||'1');
+    const st=localStorage.getItem('pc_stats');
+    if(st) studyStats=JSON.parse(st);
   } catch(e){}
 }
 function loadDemo() {
@@ -216,33 +227,39 @@ function applyZoom(newZoom, pivotCX, pivotCY) {
   const oldS = getScale();
   zoomLevel = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, parseFloat(newZoom.toFixed(2))));
   const newS = getScale();
-  // Adjust camera so the pivot world point stays under the pivot screen point
   camX = ((pivotCX + camX) / oldS) * newS - pivotCX;
   camY = ((pivotCY + camY) / oldS) * newS - pivotCY;
   const mx = Math.max(0, MAP_W * newS - cw);
   const my = Math.max(0, MAP_H * newS - ch);
   camX = Math.max(0, Math.min(mx, camX));
   camY = Math.max(0, Math.min(my, camY));
+  const btn = document.getElementById('btn-zoom-pct');
+  if(btn) btn.textContent = Math.round(zoomLevel*100)+'%';
 }
-function zoomIn()  { applyZoom(zoomLevel+ZOOM_STEP, cw/2, ch/2); showNotif('🔍 Zoom '+Math.round(zoomLevel*100)+'%'); }
-function zoomOut() { applyZoom(zoomLevel-ZOOM_STEP, cw/2, ch/2); showNotif('🔍 Zoom '+Math.round(zoomLevel*100)+'%'); }
-function zoomReset(){ applyZoom(1.0, cw/2, ch/2); showNotif('🔍 Zoom 100%'); }
+function zoomIn()   { applyZoom(zoomLevel+ZOOM_STEP, cw/2, ch/2); }
+function zoomOut()  { applyZoom(zoomLevel-ZOOM_STEP, cw/2, ch/2); }
+function zoomReset(){ applyZoom(1.0, cw/2, ch/2); }
 
-// Mouse wheel zoom — zoom cap al cursor
+// Wheel → zoom suau (trackpad i ratolí)
 canvas.addEventListener('wheel', e => {
   e.preventDefault();
-  const delta = e.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP;
-  applyZoom(zoomLevel + delta, e.offsetX, e.offsetY);
+  const factor = e.deltaMode === 1 ? 0.05 : 0.0018;
+  const newZ = zoomLevel * (1 - e.deltaY * factor);
+  applyZoom(newZ, e.offsetX, e.offsetY);
   showNotif('🔍 Zoom '+Math.round(zoomLevel*100)+'%');
 }, {passive:false});
+
+// Evitar que el navegador faci zoom de pàgina amb pinch/ctrlKey+wheel
+window.addEventListener('wheel', e => { if(e.ctrlKey) e.preventDefault(); }, {passive:false});
 
 // ════════════════════════════════════════════════
 //  INPUT
 // ════════════════════════════════════════════════
 window.addEventListener('keydown', e => {
   keys[e.key]=true;
+  if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key)) e.preventDefault();
   if ((e.key==='e'||e.key==='E'||e.key===' ')&&nearMem&&!builderMode&&!quizMode) {
-    openMem?closeMemory():openMemCard(nearMem); e.preventDefault();
+    openMem?closeMemory():openMemCard(nearMem);
   }
   if (e.key==='Escape') { closeMemory(); closeRoomModal(); closeQuiz(); }
   if (e.key==='Enter'&&document.getElementById('room-modal').classList.contains('visible')) confirmRoomName();
@@ -619,15 +636,7 @@ function drawPlayer(ox,oy) {
   ctx.beginPath(); ctx.arc(sx-sz*.1,sy-sz*.13-bob,sz*.065,0,Math.PI*2); ctx.arc(sx+sz*.1,sy-sz*.13-bob,sz*.065,0,Math.PI*2); ctx.fill();
 }
 
-// Zoom HUD overlay
-function drawZoomHUD() {
-  const txt=Math.round(zoomLevel*100)+'%';
-  ctx.fillStyle='rgba(80,160,255,0.55)';
-  ctx.font='bold 11px Share Tech Mono,monospace';
-  ctx.textAlign='left'; ctx.textBaseline='top';
-  ctx.fillText('🔍 '+txt, 10, 10);
-  ctx.textBaseline='alphabetic';
-}
+function drawZoomHUD() {}
 
 // ════════════════════════════════════════════════
 //  UPDATE
@@ -645,13 +654,7 @@ function updatePlayer() {
   // Auto-zoom when entering a new room
   const cr=roomAt(player.x,player.y); if(cr) curRoomName=cr.name;
   const newRid=cr?cr.id:null;
-  if(newRid!==prevRoomId){
-    prevRoomId=newRid;
-    if(newRid){
-      const fitZ=Math.min(cw/(cr.w*BASE_SCALE*1.2), ch/(cr.h*BASE_SCALE*1.2), ZOOM_MAX);
-      applyZoom(fitZ, cw/2, ch/2);
-    } else { applyZoom(1.0, cw/2, ch/2); }
-  }
+  if(newRid!==prevRoomId){ prevRoomId=newRid; }
 
   let best=null,bestD=INTERACT_D;
   for(const m of memories){const p=memPos(m);if(!p)continue;const d=dist(player.x,player.y,p.x,p.y);if(d<bestD){best=m;bestD=d;}}
@@ -850,9 +853,16 @@ function renderEditorList(){
 // ════════════════════════════════════════════════
 function startQuiz() {
   if(!memories.length){showNotif('⚠ No hi ha memòries per repassar');return;}
-  // Shuffle
-  quizQueue=[...memories].sort(()=>Math.random()-.5);
-  quizCorrect=0; quizTotal=quizQueue.length;
+  const now=Date.now();
+  // SRS: les pendents primer (due <= now), ordenades per més endarrerides; les futures al final
+  quizQueue=[...memories].sort((a,b)=>{
+    const da=(a.srs?.due||0), db=(b.srs?.due||0);
+    const aDue=da<=now, bDue=db<=now;
+    if(aDue&&!bDue) return -1;
+    if(!aDue&&bDue) return 1;
+    return da-db;
+  });
+  quizCorrect=0; quizForgot=0; quizTotal=quizQueue.length;
   quizMode=true;
   closeMemory(); document.getElementById('editor-panel').classList.remove('open');
   showNextQuiz();
@@ -862,8 +872,17 @@ function showNextQuiz() {
   if(!quizQueue.length){ endQuiz(); return; }
   quizCurrent=quizQueue.shift();
   const r=rooms.find(r=>r.id===quizCurrent.room);
+  const srs=quizCurrent.srs||{interval:0,ease:2.5,due:0};
+  const now=Date.now();
+  const overdue=srs.due&&srs.due<=now;
+  const daysLeft=srs.due?Math.round((srs.due-now)/86400000):null;
+  let srsLabel='';
+  if(!srs.interval)            srsLabel='🆕 Nova';
+  else if(overdue)             srsLabel='⏰ Endarrerida';
+  else if(daysLeft!==null)     srsLabel=`📅 ${daysLeft}d`;
+
   document.getElementById('quiz-progress').textContent=`${quizTotal-quizQueue.length} / ${quizTotal}`;
-  document.getElementById('quiz-room').textContent=r?'📍 '+r.name:'';
+  document.getElementById('quiz-room').textContent=(r?'📍 '+r.name:'')+(srsLabel?' · '+srsLabel:'');
   document.getElementById('quiz-cat').textContent=CAT[quizCurrent.cat].icon+' '+CAT[quizCurrent.cat].label;
   document.getElementById('quiz-cat').className='quiz-cat '+quizCurrent.cat;
   document.getElementById('quiz-question').textContent=quizCurrent.title;
@@ -877,15 +896,47 @@ function showQuizAnswer(){
   document.getElementById('quiz-show-btn').style.display='none';
   document.getElementById('quiz-result-btns').style.display='flex';
 }
-function quizResult(correct){
-  if(correct) quizCorrect++;
+function quizResult(rating){
+  // rating: 'easy' | 'hard' | 'forgot'
+  const correct = rating!=='forgot';
+  if(correct) quizCorrect++; else quizForgot++;
+
+  // Stats per categoria
+  const cat=quizCurrent?.cat;
+  if(cat && studyStats[cat]){
+    studyStats[cat].total++;
+    if(correct) studyStats[cat].correct++;
+  }
+
+  // SRS: actualitzar interval i ease (simplificació SM-2)
+  const m=memories.find(x=>x.id===quizCurrent.id);
+  if(m){
+    if(!m.srs) m.srs={interval:0, ease:2.5, due:0};
+    const s=m.srs;
+    const now=Date.now();
+    if(rating==='forgot'){
+      s.interval=0;
+      s.ease=Math.max(1.3, s.ease-0.2);
+      // Torna a la cua al final de la sessió
+      quizQueue.push(quizCurrent);
+    } else if(rating==='hard'){
+      s.interval=Math.max(1, Math.round((s.interval||1)*1.2));
+      s.ease=Math.max(1.3, s.ease-0.15);
+      s.due=now+s.interval*86400000;
+    } else { // easy
+      s.interval=Math.max(1, Math.round((s.interval||1)*s.ease));
+      s.ease=Math.min(4, s.ease+0.1);
+      s.due=now+s.interval*86400000;
+    }
+  }
+  save();
   showNextQuiz();
 }
 function endQuiz(){
   quizMode=false;
-  const pct=Math.round((quizCorrect/quizTotal)*100);
+  const pct=quizTotal?Math.round((quizCorrect/quizTotal)*100):0;
   const emoji=pct>=80?'🏆':pct>=60?'👍':'💪';
-  document.getElementById('quiz-question').textContent=`${emoji} Resultat: ${quizCorrect}/${quizTotal} (${pct}%)`;
+  document.getElementById('quiz-question').textContent=`${emoji} Resultat: ${quizCorrect}/${quizTotal} correctes · ${quizForgot} a repassar (${pct}%)`;
   document.getElementById('quiz-answer').style.display='none';
   document.getElementById('quiz-room').textContent='';
   document.getElementById('quiz-show-btn').style.display='none';
@@ -896,6 +947,62 @@ function closeQuiz(){
   quizMode=false;
   document.getElementById('quiz-overlay').classList.remove('visible');
   document.getElementById('quiz-end-btn').style.display='none';
+}
+
+// ════════════════════════════════════════════════
+//  STATS
+// ════════════════════════════════════════════════
+function openStats(){
+  const overlay=document.getElementById('stats-overlay');
+  const body=document.getElementById('stats-body');
+  body.innerHTML='';
+
+  const catKeys=Object.keys(CAT);
+  const totalMems=memories.length;
+
+  catKeys.forEach(key=>{
+    const cat=CAT[key];
+    const st=studyStats[key];
+    const count=memories.filter(m=>m.cat===key).length;
+    const pct=st.total>0?Math.round((st.correct/st.total)*100):null;
+
+    // colour based on % correct
+    let barColor, statusLabel;
+    if(pct===null){ barColor='rgba(80,160,255,.35)'; statusLabel='Sense dades'; }
+    else if(pct>=75){ barColor='#3ddc84'; statusLabel='✓ Dominat'; }
+    else if(pct>=50){ barColor='#ffd700'; statusLabel='↗ En progrés'; }
+    else { barColor='#ff6060'; statusLabel='✕ Cal repassar'; }
+
+    const barPct=pct!==null?pct:0;
+
+    body.innerHTML+=`
+      <div class="stat-row">
+        <div class="stat-header">
+          <span class="stat-cat-label ${key}">${cat.icon} ${cat.label}</span>
+          <span class="stat-status" style="color:${barColor}">${statusLabel}</span>
+        </div>
+        <div class="stat-bar-wrap">
+          <div class="stat-bar" style="width:${barPct}%;background:${barColor}"></div>
+        </div>
+        <div class="stat-meta">
+          <span>${count} memòria${count!==1?'es':''}</span>
+          ${st.total>0?`<span>${st.correct} / ${st.total} correctes (${pct}%)</span>`:'<span>Fes un repàs per veure resultats</span>'}
+        </div>
+      </div>`;
+  });
+
+  body.innerHTML+=`<div class="stat-total">Total: <strong>${totalMems}</strong> memòria${totalMems!==1?'es':''} al palau</div>`;
+  body.innerHTML+=`<div style="text-align:right;margin-top:8px"><button class="btn-secondary" style="font-size:9px;padding:4px 10px;" onclick="resetStats()">🗑 Reiniciar estadístiques</button></div>`;
+
+  overlay.classList.add('visible');
+}
+function closeStats(){
+  document.getElementById('stats-overlay').classList.remove('visible');
+}
+function resetStats(){
+  if(!confirm('Reiniciar totes les estadístiques?')) return;
+  Object.keys(studyStats).forEach(k=>{ studyStats[k]={correct:0,total:0}; });
+  save(); openStats();
 }
 
 // ════════════════════════════════════════════════
@@ -938,4 +1045,64 @@ function startGame(demo){
   resizeCanvas();
   if(!rooms.length){ setTimeout(()=>{ toggleBuilder(); showNotif('🏗 Comença arrossegant la primera habitació!'); },350); }
   loop();
+}
+
+// Intro buttons + stats
+(function(){
+  const hasSave = !!localStorage.getItem('pc_rooms');
+  const btns = document.getElementById('intro-btns');
+  if(hasSave){
+    btns.innerHTML=`
+      <button class="btn-primary" onclick="startGame(false)">🔥 CONTINUAR EL MEU PALAU</button>
+      <button class="btn-secondary" onclick="confirmNewPalace()">✦ Nou palau</button>
+      <button class="btn-secondary" onclick="startGame(true)">▶ Palau d'exemple</button>`;
+    try {
+      const r=JSON.parse(localStorage.getItem('pc_rooms')||'[]');
+      const m=JSON.parse(localStorage.getItem('pc_mems')||'[]');
+      const statsEl=document.getElementById('intro-stats');
+      if(statsEl) statsEl.innerHTML=`🧠 <span>${m.length}</span> memòries guardades &nbsp;·&nbsp; <span>${r.length}</span> habitacions`;
+    } catch(e){}
+  } else {
+    btns.innerHTML=`
+      <button class="btn-primary" onclick="startGame(false)">🔥 CONSTRUIR EL MEU PALAU</button>
+      <button class="btn-secondary" onclick="startGame(true)">▶ Palau d'exemple</button>`;
+  }
+})();
+
+// Spark particles
+(function(){
+  const c=document.getElementById('spark-canvas');
+  if(!c) return;
+  const ctx=c.getContext('2d');
+  let W,H,sparks=[];
+  function resize(){ W=c.width=c.offsetWidth; H=c.height=c.offsetHeight; }
+  resize(); window.addEventListener('resize',resize);
+  function newSpark(){
+    return { x:Math.random()*W, y:H+4, vx:(Math.random()-.5)*0.8,
+      vy:-(1.2+Math.random()*2.2), life:1, size:1.5+Math.random()*2 };
+  }
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    if(Math.random()<.18) sparks.push(newSpark());
+    sparks=sparks.filter(s=>s.life>0);
+    sparks.forEach(s=>{
+      s.x+=s.vx; s.y+=s.vy; s.vy*=.985; s.life-=.012;
+      const a=Math.max(0,s.life);
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.size*a,0,Math.PI*2);
+      const hue=Math.random()<.6?30:50;
+      ctx.fillStyle=`hsla(${hue},100%,65%,${a*.85})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+function confirmNewPalace(){
+  if(confirm('Segur que vols esborrar el palau actual i començar de zero?')){
+    localStorage.removeItem('pc_rooms'); localStorage.removeItem('pc_mems');
+    localStorage.removeItem('pc_furn');  localStorage.removeItem('pc_stats');
+    startGame(false);
+  }
 }
