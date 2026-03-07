@@ -7,10 +7,8 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-
     <!-- ═══════════ INTRO ═══════════ -->
     <div class="screen" id="intro">
-
       <!-- Plànol animat de fons -->
       <div class="palace-blueprint" aria-hidden="true">
         <div class="bp-room bp-r1"><span>🛋</span></div>
@@ -20,9 +18,9 @@
         <div class="bp-room bp-r5"><span>⚗️</span></div>
         <div class="bp-corridor bp-c1"></div>
         <div class="bp-corridor bp-c2"></div>
-        <div class="bp-dot" style="top:38%;left:30%"></div>
-        <div class="bp-dot" style="top:55%;left:62%"></div>
-        <div class="bp-dot" style="top:25%;left:55%"></div>
+        <div class="bp-dot" style="top: 38%; left: 30%"></div>
+        <div class="bp-dot" style="top: 55%; left: 62%"></div>
+        <div class="bp-dot" style="top: 25%; left: 55%"></div>
       </div>
 
       <!-- Partícules de foc -->
@@ -42,32 +40,95 @@
 
     <!-- ═══════════ GAME ═══════════ -->
     <div class="screen hidden" id="game">
-
       <!-- HUD -->
       <div id="hud">
-        <span class="hud-title" onclick="goToMenu()" style="cursor:pointer;" title="Tornar al menú">🔥 PALAU</span>
+        <span
+          class="hud-title"
+          onclick="goToMenu()"
+          style="cursor: pointer"
+          title="Tornar al menú"
+          >🔥 PALAU</span
+        >
         <div class="hud-sep"></div>
         <span class="hud-info">Sala: <span id="hud-room">—</span></span>
         <div class="hud-sep"></div>
-        <span class="hud-info">Memòries: <span id="hud-count" style="color:var(--gold)">0</span></span>
+        <span class="hud-info"
+          >Memòries:
+          <span id="hud-count" style="color: var(--gold)">0</span></span
+        >
         <div class="hud-right">
           <!-- Zoom -->
-          <button class="btn-hud btn-hud-dim" onclick="zoomOut()" title="Allunyar (-)">－</button>
-          <button class="btn-hud btn-hud-dim" id="btn-zoom-pct" onclick="zoomReset()" title="Restablir zoom (0)">150%</button>
-          <button class="btn-hud btn-hud-dim" onclick="zoomIn()"  title="Apropar (+)">＋</button>
+          <button
+            class="btn-hud btn-hud-dim"
+            onclick="zoomOut()"
+            title="Allunyar (-)"
+          >
+            －
+          </button>
+          <button
+            class="btn-hud btn-hud-dim"
+            id="btn-zoom-pct"
+            onclick="zoomReset()"
+            title="Restablir zoom (0)"
+          >
+            150%
+          </button>
+          <button
+            class="btn-hud btn-hud-dim"
+            onclick="zoomIn()"
+            title="Apropar (+)"
+          >
+            ＋
+          </button>
           <div class="hud-sep"></div>
           <!-- Export / Import -->
-          <button class="btn-hud btn-hud-green" onclick="exportPalace()" title="Exportar còpia de seguretat">💾</button>
-          <button class="btn-hud btn-hud-green" onclick="importPalace()" title="Importar palau">📂</button>
+          <button
+            class="btn-hud btn-hud-green"
+            onclick="exportPalace()"
+            title="Exportar còpia de seguretat"
+          >
+            💾
+          </button>
+          <button
+            class="btn-hud btn-hud-green"
+            onclick="importPalace()"
+            title="Importar palau"
+          >
+            📂
+          </button>
           <div class="hud-sep"></div>
           <!-- Quiz -->
-          <button class="btn-hud btn-hud-gold" onclick="startQuiz()">🧠 REPÀS</button>
-          <button class="btn-hud btn-hud-gold" onclick="openStats()">📊 STATS</button>
+          <button class="btn-hud btn-hud-gold" onclick="startQuiz()">
+            🧠 REPÀS
+          </button>
+          <button class="btn-hud btn-hud-gold" onclick="openStats()">
+            📊 STATS
+          </button>
           <div class="hud-sep"></div>
-          <button class="btn-hud btn-hud-dim" id="btn-speed" onclick="cycleSpeed()">🐢 2.2</button>
-          <button class="btn-hud btn-hud-blue" id="btn-build" onclick="toggleBuilder()">🏗 CONSTRUIR</button>
-          <button class="btn-hud btn-hud-fire" onclick="toggleEditor()">✏ MEMÒRIES</button>
-          <button class="btn-hud btn-hud-dim" onclick="openPlayerCustomizer()" title="Personalitzar personatge">🧑‍🚒</button>
+          <button
+            class="btn-hud btn-hud-dim"
+            id="btn-speed"
+            onclick="cycleSpeed()"
+          >
+            🐢 2.2
+          </button>
+          <button
+            class="btn-hud btn-hud-blue"
+            id="btn-build"
+            onclick="toggleBuilder()"
+          >
+            🏗 CONSTRUIR
+          </button>
+          <button class="btn-hud btn-hud-fire" onclick="toggleEditor()">
+            ✏ MEMÒRIES
+          </button>
+          <button
+            class="btn-hud btn-hud-dim"
+            onclick="openPlayerCustomizer()"
+            title="Personalitzar personatge"
+          >
+            🧑‍🚒
+          </button>
         </div>
       </div>
 
@@ -81,36 +142,90 @@
         <div class="bbar-top">
           <span class="bbar-label">🏗 CONSTRUCTOR</span>
           <div class="bbar-sep"></div>
-          <button class="bbar-btn draw active" id="tool-draw"      onclick="setTool('draw')">✦ DIBUIXAR</button>
-          <button class="bbar-btn furn"        id="tool-furniture" onclick="setTool('furniture')">🖼 IMATGE</button>
-          <button class="bbar-btn movemem"     id="tool-movemem"   onclick="setTool('movemem')">✥ MOURE MEM.</button>
-          <button class="bbar-btn erase"       id="tool-erase"     onclick="setTool('erase')">✕ ESBORRAR</button>
-          <button class="bbar-btn rename"                          onclick="renameSelected()">✏ RENOMBRAR</button>
+          <button
+            class="bbar-btn draw active"
+            id="tool-draw"
+            onclick="setTool('draw')"
+          >
+            ✦ DIBUIXAR
+          </button>
+          <button
+            class="bbar-btn furn"
+            id="tool-furniture"
+            onclick="setTool('furniture')"
+          >
+            🖼 IMATGE
+          </button>
+          <button
+            class="bbar-btn movemem"
+            id="tool-movemem"
+            onclick="setTool('movemem')"
+          >
+            ✥ MOURE MEM.
+          </button>
+          <button
+            class="bbar-btn erase"
+            id="tool-erase"
+            onclick="setTool('erase')"
+          >
+            ✕ ESBORRAR
+          </button>
+          <button class="bbar-btn rename" onclick="renameSelected()">
+            ✏ RENOMBRAR
+          </button>
           <div class="bbar-sep"></div>
           <div class="color-swatches" id="swatches"></div>
         </div>
-        <div id="furniture-picker" style="display:none"></div>
+        <div id="furniture-picker" style="display: none"></div>
       </div>
 
       <!-- D-pad controls -->
       <div id="controls-bar">
         <div class="dpad">
           <div class="empty"></div>
-          <button id="btn-up"    onpointerdown="dp('up',1)"    onpointerup="dp('up',0)">▲</button>
+          <button
+            id="btn-up"
+            onpointerdown="dp('up',1)"
+            onpointerup="dp('up',0)"
+          >
+            ▲
+          </button>
           <div class="empty"></div>
-          <button id="btn-left"  onpointerdown="dp('left',1)"  onpointerup="dp('left',0)">◀</button>
+          <button
+            id="btn-left"
+            onpointerdown="dp('left',1)"
+            onpointerup="dp('left',0)"
+          >
+            ◀
+          </button>
           <div class="empty"></div>
-          <button id="btn-right" onpointerdown="dp('right',1)" onpointerup="dp('right',0)">▶</button>
+          <button
+            id="btn-right"
+            onpointerdown="dp('right',1)"
+            onpointerup="dp('right',0)"
+          >
+            ▶
+          </button>
           <div class="empty"></div>
-          <button id="btn-down"  onpointerdown="dp('down',1)"  onpointerup="dp('down',0)">▼</button>
+          <button
+            id="btn-down"
+            onpointerdown="dp('down',1)"
+            onpointerup="dp('down',0)"
+          >
+            ▼
+          </button>
           <div class="empty"></div>
         </div>
         <div class="hint">
-          <span id="hint-explore"><kbd>↑↓←→</kbd> Moure &nbsp;·&nbsp; <kbd>E</kbd> Interactuar<br />
-          Apropa't als objectes brillants ✦<br /></span>
-          <span id="hint-builder" style="display:none">Arrossega per dibuixar &nbsp;·&nbsp; <kbd>↑↓←→</kbd> Navegar<br /></span>
+          <span id="hint-explore"
+            ><kbd>↑↓←→</kbd> Moure &nbsp;·&nbsp; <kbd>E</kbd> Interactuar<br />
+            Apropa't als objectes brillants ✦<br
+          /></span>
+          <span id="hint-builder" style="display: none"
+            >Arrossega per dibuixar &nbsp;·&nbsp; <kbd>↑↓←→</kbd> Navegar<br
+          /></span>
         </div>
-        <div style="width:110px"></div>
+        <div style="width: 110px"></div>
       </div>
 
       <!-- Memory popup -->
@@ -128,13 +243,27 @@
       <div id="editor-panel">
         <div class="ep-head">
           <h2>✏ MEMÒRIES</h2>
-          <button class="btn-secondary" onclick="toggleEditor()" style="padding:3px 9px;font-size:9px;">✕</button>
+          <button
+            class="btn-secondary"
+            onclick="toggleEditor()"
+            style="padding: 3px 9px; font-size: 9px"
+          >
+            ✕
+          </button>
         </div>
         <div class="ep-body" id="ep-list"></div>
         <div class="ep-add">
           <h3>+ Nova memòria</h3>
-          <div class="frow"><label>Habitació</label><select id="f-room" onchange="refreshFurnitureSelect()"></select></div>
-          <div class="frow"><label>Imatge (opc.)</label><select id="f-furniture"><option value="">— Sense imatge —</option></select></div>
+          <div class="frow">
+            <label>Habitació</label
+            ><select id="f-room" onchange="refreshFurnitureSelect()"></select>
+          </div>
+          <div class="frow">
+            <label>Imatge (opc.)</label
+            ><select id="f-furniture">
+              <option value="">— Sense imatge —</option>
+            </select>
+          </div>
           <div class="frow">
             <label>Categoria</label>
             <select id="f-cat">
@@ -149,9 +278,24 @@
               <option value="territori">🌍 Territori i Natura</option>
             </select>
           </div>
-          <div class="frow"><label>Títol</label><input id="f-title" type="text" placeholder="Ex: Art. 23 LPRL" /></div>
-          <div class="frow"><label>Contingut</label><textarea id="f-body" placeholder="Escriu el teu apunt…"></textarea></div>
-          <button class="btn-primary" style="width:100%;font-size:10px;padding:8px;" onclick="addMemory()">AFEGIR MEMÒRIA</button>
+          <div class="frow">
+            <label>Títol</label
+            ><input id="f-title" type="text" placeholder="Ex: Art. 23 LPRL" />
+          </div>
+          <div class="frow">
+            <label>Contingut</label
+            ><textarea
+              id="f-body"
+              placeholder="Escriu el teu apunt…"
+            ></textarea>
+          </div>
+          <button
+            class="btn-primary"
+            style="width: 100%; font-size: 10px; padding: 8px"
+            onclick="addMemory()"
+          >
+            AFEGIR MEMÒRIA
+          </button>
         </div>
       </div>
 
@@ -159,10 +303,23 @@
       <div id="room-modal">
         <div class="rmodal-box">
           <h3>✏ NOM DE L'HABITACIÓ</h3>
-          <input id="modal-input" type="text" placeholder="Saló, Dormitori, Cuina…" maxlength="24" />
+          <input
+            id="modal-input"
+            type="text"
+            placeholder="Saló, Dormitori, Cuina…"
+            maxlength="24"
+          />
           <div class="rmodal-btns">
-            <button class="btn-secondary" onclick="closeRoomModal()">Cancel·lar</button>
-            <button class="btn-primary" style="padding:8px 20px;font-size:11px;" onclick="confirmRoomName()">Desar</button>
+            <button class="btn-secondary" onclick="closeRoomModal()">
+              Cancel·lar
+            </button>
+            <button
+              class="btn-primary"
+              style="padding: 8px 20px; font-size: 11px"
+              onclick="confirmRoomName()"
+            >
+              Desar
+            </button>
           </div>
         </div>
       </div>
@@ -173,7 +330,13 @@
           <div id="quiz-header">
             <span id="quiz-progress" class="quiz-progress">0 / 0</span>
             <span class="quiz-title">🧠 MODE REPÀS</span>
-            <button class="mclose" onclick="closeQuiz()" style="position:relative;top:0;right:0;">✕</button>
+            <button
+              class="mclose"
+              onclick="closeQuiz()"
+              style="position: relative; top: 0; right: 0"
+            >
+              ✕
+            </button>
           </div>
 
           <div id="quiz-room"></div>
@@ -184,15 +347,35 @@
           <div id="quiz-answer"></div>
 
           <div class="quiz-actions">
-            <button id="quiz-show-btn"  class="btn-primary"  onclick="showQuizAnswer()" style="font-size:11px;padding:9px 28px;">👁 Veure resposta</button>
+            <button
+              id="quiz-show-btn"
+              class="btn-primary"
+              onclick="showQuizAnswer()"
+              style="font-size: 11px; padding: 9px 28px"
+            >
+              👁 Veure resposta
+            </button>
 
-            <div id="quiz-result-btns" style="display:none">
-              <button class="btn-quiz-forgot" onclick="quizResult('forgot')">✕ No ho sabia</button>
-              <button class="btn-quiz-hard"   onclick="quizResult('hard')">≈ Difícil</button>
-              <button class="btn-quiz-easy"   onclick="quizResult('easy')">✓ Fàcil</button>
+            <div id="quiz-result-btns" style="display: none">
+              <button class="btn-quiz-forgot" onclick="quizResult('forgot')">
+                ✕ No ho sabia
+              </button>
+              <button class="btn-quiz-hard" onclick="quizResult('hard')">
+                ≈ Difícil
+              </button>
+              <button class="btn-quiz-easy" onclick="quizResult('easy')">
+                ✓ Fàcil
+              </button>
             </div>
 
-            <button id="quiz-end-btn" class="btn-primary" onclick="closeQuiz()" style="display:none;font-size:11px;padding:9px 28px;">Tancar</button>
+            <button
+              id="quiz-end-btn"
+              class="btn-primary"
+              onclick="closeQuiz()"
+              style="display: none; font-size: 11px; padding: 9px 28px"
+            >
+              Tancar
+            </button>
           </div>
         </div>
       </div>
@@ -202,7 +385,13 @@
         <div id="stats-box">
           <div id="stats-header">
             <span class="quiz-title">📊 ESTADÍSTIQUES D'ESTUDI</span>
-            <button class="mclose" onclick="closeStats()" style="position:relative;top:0;right:0;">✕</button>
+            <button
+              class="mclose"
+              onclick="closeStats()"
+              style="position: relative; top: 0; right: 0"
+            >
+              ✕
+            </button>
           </div>
           <div id="stats-body"></div>
         </div>
@@ -225,13 +414,31 @@
               <div class="frow">
                 <label>Gènere</label>
                 <div class="pgender-btns">
-                  <button id="pgender-m" class="pgender-btn active" onclick="setPGender('m')">♂ Home</button>
-                  <button id="pgender-f" class="pgender-btn" onclick="setPGender('f')">♀ Dona</button>
+                  <button
+                    id="pgender-m"
+                    class="pgender-btn active"
+                    onclick="setPGender('m')"
+                  >
+                    ♂ Home
+                  </button>
+                  <button
+                    id="pgender-f"
+                    class="pgender-btn"
+                    onclick="setPGender('f')"
+                  >
+                    ♀ Dona
+                  </button>
                 </div>
               </div>
               <div class="frow">
                 <label>Nom (opc.)</label>
-                <input id="p-name" type="text" placeholder="El teu nom…" maxlength="16" oninput="previewPlayer()" />
+                <input
+                  id="p-name"
+                  type="text"
+                  placeholder="El teu nom…"
+                  maxlength="16"
+                  oninput="previewPlayer()"
+                />
               </div>
               <div class="frow">
                 <label>Color de pell</label>
@@ -248,13 +455,21 @@
             </div>
           </div>
           <div class="pmodal-footer">
-            <button class="btn-secondary" onclick="closePlayerCustomizer()">Cancel·lar</button>
-            <button class="btn-primary" style="padding:8px 22px;font-size:11px;" onclick="savePlayerCustomizer()">Desar</button>
+            <button class="btn-secondary" onclick="closePlayerCustomizer()">
+              Cancel·lar
+            </button>
+            <button
+              class="btn-primary"
+              style="padding: 8px 22px; font-size: 11px"
+              onclick="savePlayerCustomizer()"
+            >
+              Desar
+            </button>
           </div>
         </div>
       </div>
-
-    </div><!-- /game -->
+    </div>
+    <!-- /game -->
 
     <script src="game.js"></script>
   </body>

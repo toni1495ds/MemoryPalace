@@ -26,13 +26,13 @@ L'aplicació és 100% client-side (HTML + CSS + JS), no requereix servidor ni in
 
 Activa el mode constructor amb el botó **CONSTRUIR** (o `🏗`).
 
-| Eina | Acció |
-|---|---|
-| **✦ Dibuixar** | Arrossega al canvas per crear una nova habitació rectangular. |
-| **🪑 Moble** | Fes clic dins una habitació per col·locar el moble seleccionat. Arrossega'l per moure'l. Agafa la maneta `↘` per redimensionar-lo. |
-| **✥ Moure mem.** | Arrossega les icones de memòria per reposicionar-les. |
-| **✕ Esborrar** | Fes clic sobre un moble o habitació per eliminar-la (amb desfer). |
-| **✏ Renombrar** | Renombra l'habitació seleccionada. |
+| Eina             | Acció                                                                                                                              |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| **✦ Dibuixar**   | Arrossega al canvas per crear una nova habitació rectangular.                                                                      |
+| **🪑 Moble**     | Fes clic dins una habitació per col·locar el moble seleccionat. Arrossega'l per moure'l. Agafa la maneta `↘` per redimensionar-lo. |
+| **✥ Moure mem.** | Arrossega les icones de memòria per reposicionar-les.                                                                              |
+| **✕ Esborrar**   | Fes clic sobre un moble o habitació per eliminar-la (amb desfer).                                                                  |
+| **✏ Renombrar**  | Renombra l'habitació seleccionada.                                                                                                 |
 
 **Colors d'habitació** — 8 paletes disponibles (Azul, Rojo, Verde, Dorado, Morado, Cian, Naranja, Gris). La paleta tenyeix el fons i les parets de l'habitació.
 
@@ -42,14 +42,14 @@ Activa el mode constructor amb el botó **CONSTRUIR** (o `🏗`).
 
 Organitzat per estances. Es col·loca fent clic dins una habitació i es pot redimensionar lliurement.
 
-| Estança | Mobles |
-|---|---|
+| Estança          | Mobles                                                                 |
+| ---------------- | ---------------------------------------------------------------------- |
 | **Sala d'estar** | Sofà, Butaca, Tele, Taula centre, Catifa, Làmpada, Llar de foc, Quadre |
-| **Dormitori** | Llit, Armari, Tauleta de nit, Mirall |
-| **Estudi** | Escriptori, Prestatgeria, Piano |
-| **Cuina** | Taula, Nevera, Fogons, Rentadora, Rentavaixelles |
-| **Bany** | WC, Banyera, Dutxa, Lavabo |
-| **General** | Planta, Porta |
+| **Dormitori**    | Llit, Armari, Tauleta de nit, Mirall                                   |
+| **Estudi**       | Escriptori, Prestatgeria, Piano                                        |
+| **Cuina**        | Taula, Nevera, Fogons, Rentadora, Rentavaixelles                       |
+| **Bany**         | WC, Banyera, Dutxa, Lavabo                                             |
+| **General**      | Planta, Porta                                                          |
 
 Els mobles amb memòries associades mostren un **punt groc brillant** a la cantonada superior dreta amb el nombre de memòries.
 
@@ -83,12 +83,12 @@ Obre el panell lateral amb **✏ MEMÒRIES**.
 
 Passeig pel palau en primera persona (vista cenital).
 
-| Control | Acció |
-|---|---|
-| `↑ ↓ ← →` | Moure el jugador |
-| `E` o `Espai` | Obrir la memòria més propera |
-| `Escape` | Tancar la targeta de memòria |
-| D-pad (pantalla) | Moviment tàctil |
+| Control          | Acció                        |
+| ---------------- | ---------------------------- |
+| `↑ ↓ ← →`        | Moure el jugador             |
+| `E` o `Espai`    | Obrir la memòria més propera |
+| `Escape`         | Tancar la targeta de memòria |
+| D-pad (pantalla) | Moviment tàctil              |
 
 Quan el jugador **s'acosta a una memòria** (≤ 38px de distància), la icona s'il·lumina i s'indica amb `[E]`. Les memòries brillen amb un halo de color segons la categoria.
 
@@ -98,11 +98,11 @@ Quan el jugador **s'acosta a una memòria** (≤ 38px de distància), la icona s
 
 ### 🔍 Zoom
 
-| Acció | Com |
-|---|---|
-| Apropar | Botó `＋` o tecla `+` |
-| Allunyar | Botó `－` o tecla `-` |
-| Zoom 100% | Botó `⊙` o tecla `0` |
+| Acció       | Com                               |
+| ----------- | --------------------------------- |
+| Apropar     | Botó `＋` o tecla `+`             |
+| Allunyar    | Botó `－` o tecla `-`             |
+| Zoom 100%   | Botó `⊙` o tecla `0`              |
 | Zoom lliure | Scroll del ratolí (cap al cursor) |
 
 Rang: 40% – 300%. El zoom és sempre centrat: al fer scroll, el punt del canvas sota el cursor no es desplaça.
@@ -123,11 +123,11 @@ Botó **🧠 REPÀS** a la barra superior.
 
 ### 💾 Persistència i exportació
 
-| Funció | Detall |
-|---|---|
-| **Auto-desar** | Cada canvi es guarda automàticament a `localStorage`. |
+| Funció            | Detall                                                                         |
+| ----------------- | ------------------------------------------------------------------------------ |
+| **Auto-desar**    | Cada canvi es guarda automàticament a `localStorage`.                          |
 | **Exportar** `💾` | Descàrrega un fitxer `.json` amb tot el palau (habitacions, mobles, memòries). |
-| **Importar** `📂` | Carrega un fitxer `.json` exportat prèviament. |
+| **Importar** `📂` | Carrega un fitxer `.json` exportat prèviament.                                 |
 
 ---
 
@@ -176,12 +176,12 @@ MemoryPalace/
 
 ## Dreceres de teclat
 
-| Tecla | Acció |
-|---|---|
-| `↑ ↓ ← →` | Moure jugador / càmera (en constructor) |
-| `E` / `Espai` | Interactuar amb memòria propera |
-| `+` / `=` | Zoom in |
-| `-` | Zoom out |
-| `0` | Zoom 100% |
-| `Escape` | Tancar targeta / modal |
-| `Enter` | Confirmar nom d'habitació |
+| Tecla         | Acció                                   |
+| ------------- | --------------------------------------- |
+| `↑ ↓ ← →`     | Moure jugador / càmera (en constructor) |
+| `E` / `Espai` | Interactuar amb memòria propera         |
+| `+` / `=`     | Zoom in                                 |
+| `-`           | Zoom out                                |
+| `0`           | Zoom 100%                               |
+| `Escape`      | Tancar targeta / modal                  |
+| `Enter`       | Confirmar nom d'habitació               |
