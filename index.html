@@ -114,7 +114,8 @@
         <div class="ep-body" id="ep-list"></div>
         <div class="ep-add">
           <h3>+ Nova memòria</h3>
-          <div class="frow"><label>Habitació</label><select id="f-room"></select></div>
+          <div class="frow"><label>Habitació</label><select id="f-room" onchange="refreshFurnitureSelect()"></select></div>
+          <div class="frow"><label>Moble (opc.)</label><select id="f-furniture"><option value="">— Sense moble —</option></select></div>
           <div class="frow">
             <label>Categoria</label>
             <select id="f-cat">

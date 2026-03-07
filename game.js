@@ -187,7 +187,13 @@ function importPalace() {
 // ════════════════════════════════════════════════
 function snap(v)           { return Math.round(v/GRID)*GRID; }
 function roomAt(x,y)       { return rooms.find(r=>x>=r.x&&x<=r.x+r.w&&y>=r.y&&y<=r.y+r.h)||null; }
-function memPos(m)         { const r=rooms.find(r=>r.id===m.room); return r?{x:r.x+m.ox,y:r.y+m.oy}:null; }
+function memPos(m) {
+  if (m.furnitureId) {
+    const f=furniture.find(f=>f.id===m.furnitureId);
+    if (f) { const p=furPos(f); if(p){ const fw=f.scaleW||FURNITURE[f.type].w, fh=f.scaleH||FURNITURE[f.type].h; return {x:p.x+fw/2, y:p.y+fh/2}; } }
+  }
+  const r=rooms.find(r=>r.id===m.room); return r?{x:r.x+m.ox,y:r.y+m.oy}:null;
+}
 function furPos(f)         { const r=rooms.find(r=>r.id===f.room); return r?{x:r.x+f.ox,y:r.y+f.oy}:null; }
 function dist(ax,ay,bx,by) { return Math.hypot(ax-bx,ay-by); }
 function c2w(cx,cy)        { const S=getScale(); return{x:(cx+camX)/S,y:(cy+camY)/S}; }
@@ -198,14 +204,28 @@ function furAtWorld(wx,wy) { for(const f of furniture){const p=furPos(f);if(!p)c
 // ════════════════════════════════════════════════
 //  ZOOM
 // ════════════════════════════════════════════════
-function zoomIn()  { zoomLevel=Math.min(ZOOM_MAX, parseFloat((zoomLevel+ZOOM_STEP).toFixed(2))); showNotif('🔍 Zoom '+Math.round(zoomLevel*100)+'%'); }
-function zoomOut() { zoomLevel=Math.max(ZOOM_MIN, parseFloat((zoomLevel-ZOOM_STEP).toFixed(2))); showNotif('🔍 Zoom '+Math.round(zoomLevel*100)+'%'); }
-function zoomReset(){ zoomLevel=1.0; showNotif('🔍 Zoom 100%'); }
+function applyZoom(newZoom, pivotCX, pivotCY) {
+  const oldS = getScale();
+  zoomLevel = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, parseFloat(newZoom.toFixed(2))));
+  const newS = getScale();
+  // Adjust camera so the pivot world point stays under the pivot screen point
+  camX = ((pivotCX + camX) / oldS) * newS - pivotCX;
+  camY = ((pivotCY + camY) / oldS) * newS - pivotCY;
+  const mx = Math.max(0, MAP_W * newS - cw);
+  const my = Math.max(0, MAP_H * newS - ch);
+  camX = Math.max(0, Math.min(mx, camX));
+  camY = Math.max(0, Math.min(my, camY));
+}
+function zoomIn()  { applyZoom(zoomLevel+ZOOM_STEP, cw/2, ch/2); showNotif('🔍 Zoom '+Math.round(zoomLevel*100)+'%'); }
+function zoomOut() { applyZoom(zoomLevel-ZOOM_STEP, cw/2, ch/2); showNotif('🔍 Zoom '+Math.round(zoomLevel*100)+'%'); }
+function zoomReset(){ applyZoom(1.0, cw/2, ch/2); showNotif('🔍 Zoom 100%'); }
 
-// Mouse wheel zoom
+// Mouse wheel zoom — zoom cap al cursor
 canvas.addEventListener('wheel', e => {
   e.preventDefault();
-  e.deltaY < 0 ? zoomIn() : zoomOut();
+  const delta = e.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP;
+  applyZoom(zoomLevel + delta, e.offsetX, e.offsetY);
+  showNotif('🔍 Zoom '+Math.round(zoomLevel*100)+'%');
 }, {passive:false});
 
 // ════════════════════════════════════════════════
@@ -471,6 +491,21 @@ function drawFurniture(ox,oy) {
     ctx.textAlign='center'; ctx.textBaseline='middle';
     ctx.fillText(fd.emoji,sx+sw/2,sy+sh/2); ctx.textBaseline='alphabetic';
 
+    // Memory indicator (small glowing dot if memories are linked to this furniture)
+    const memCount=memories.filter(m=>m.furnitureId===f.id).length;
+    if(memCount>0){
+      const dotX=sx+sw-7*S, dotY=sy+7*S, dotR=5.5*S;
+      const glow=ctx.createRadialGradient(dotX,dotY,0,dotX,dotY,dotR*2);
+      glow.addColorStop(0,'rgba(255,220,80,0.6)'); glow.addColorStop(1,'rgba(255,220,80,0)');
+      ctx.fillStyle=glow; ctx.beginPath(); ctx.arc(dotX,dotY,dotR*2,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='rgba(255,220,80,0.95)'; ctx.beginPath(); ctx.arc(dotX,dotY,dotR,0,Math.PI*2); ctx.fill();
+      if(memCount>1){
+        ctx.fillStyle='rgba(0,0,0,0.8)'; ctx.font=`bold ${5*S}px Share Tech Mono,monospace`;
+        ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.fillText(memCount,dotX,dotY+0.5*S); ctx.textBaseline='alphabetic';
+      }
+    }
+
     // Resize handle (only when selected in furniture tool)
     if(isSel||isDrag||isResize){
       const hx=sx+sw, hy=sy+sh, hr=7;
@@ -616,10 +651,9 @@ function updatePlayer() {
   if(newRid!==prevRoomId){
     prevRoomId=newRid;
     if(newRid){
-      // Fit room in view with nice zoom
       const fitZ=Math.min(cw/(cr.w*BASE_SCALE*1.2), ch/(cr.h*BASE_SCALE*1.2), ZOOM_MAX);
-      zoomLevel=Math.max(ZOOM_MIN,parseFloat(fitZ.toFixed(2)));
-    } else { zoomLevel=1.0; }
+      applyZoom(fitZ, cw/2, ch/2);
+    } else { applyZoom(1.0, cw/2, ch/2); }
   }
 
   let best=null,bestD=INTERACT_D;
@@ -744,6 +778,14 @@ function refreshRoomSelect() {
   document.getElementById('f-room').innerHTML=rooms.length
     ?rooms.map(r=>`<option value="${r.id}">${r.name}</option>`).join('')
     :'<option value="">— Sense habitacions —</option>';
+  refreshFurnitureSelect();
+}
+function refreshFurnitureSelect() {
+  const rid=parseInt(document.getElementById('f-room').value);
+  const roomFurn=furniture.filter(f=>f.room===rid);
+  document.getElementById('f-furniture').innerHTML=
+    '<option value="">— Sense moble —</option>'+
+    roomFurn.map(f=>`<option value="${f.id}">${FURNITURE[f.type].emoji} ${FURNITURE[f.type].label}</option>`).join('');
 }
 function openMemCard(m) {
   if(!m) return; openMem=m;
@@ -769,10 +811,14 @@ function addMemory() {
   if(!title||!body){showNotif('⚠ Omple títol i contingut');return;}
   if(!rid){showNotif('⚠ Crea una habitació primer');return;}
   const r=rooms.find(r=>r.id===rid);
-  const occ=memories.filter(m=>m.room===rid);
-  let ox=50,oy=50,att=0;
-  while(occ.some(m=>Math.abs(m.ox-ox)<36&&Math.abs(m.oy-oy)<36)&&att<40){ ox=28+Math.random()*(r.w-56); oy=28+Math.random()*(r.h-56); att++; }
-  memories.push({id:nextMid++,room:rid,cat,title,body,ox:Math.round(ox),oy:Math.round(oy)});
+  const furnitureId=parseInt(document.getElementById('f-furniture').value)||null;
+  let ox=50,oy=50;
+  if (!furnitureId) {
+    const occ=memories.filter(m=>m.room===rid&&!m.furnitureId);
+    let att=0;
+    while(occ.some(m=>Math.abs(m.ox-ox)<36&&Math.abs(m.oy-oy)<36)&&att<40){ ox=28+Math.random()*(r.w-56); oy=28+Math.random()*(r.h-56); att++; }
+  }
+  memories.push({id:nextMid++,room:rid,cat,title,body,ox:Math.round(ox),oy:Math.round(oy),furnitureId});
   save(); renderEditorList();
   document.getElementById('f-title').value='';
   document.getElementById('f-body').value='';
@@ -791,13 +837,14 @@ function teleportTo(id){
   player.x=pos.x+28; player.y=pos.y;
   toggleEditor(); showNotif('📍 '+m.title);
 }
-function toggleEditor(){document.getElementById('editor-panel').classList.toggle('open');refreshRoomSelect();renderEditorList();}
+function toggleEditor(){document.getElementById('editor-panel').classList.toggle('open');refreshRoomSelect();refreshFurnitureSelect();renderEditorList();}
 function renderEditorList(){
   const el=document.getElementById('ep-list');
   if(!memories.length){el.innerHTML='<p style="color:var(--dim);font-size:11px;text-align:center;padding:18px;">Sense memòries.<br>Afegeix-ne una ↓</p>';return;}
   el.innerHTML=memories.map(m=>{
     const meta=CAT[m.cat],rname=rooms.find(r=>r.id===m.room)?.name||'?';
-    return `<div class="mi" onclick="teleportTo(${m.id})"><div class="mi-icon">${meta.icon}</div><div class="mi-info"><div class="mi-title">${m.title}</div><div class="mi-room">${rname} · ${meta.label}</div></div><button class="mi-del" onclick="deleteMemory(event,${m.id})">✕</button></div>`;
+    const furnName=m.furnitureId?(()=>{const f=furniture.find(f=>f.id===m.furnitureId);return f?` · ${FURNITURE[f.type].emoji}${FURNITURE[f.type].label}`:''})():'';
+    return `<div class="mi" onclick="teleportTo(${m.id})"><div class="mi-icon">${meta.icon}</div><div class="mi-info"><div class="mi-title">${m.title}</div><div class="mi-room">${rname}${furnName} · ${meta.label}</div></div><button class="mi-del" onclick="deleteMemory(event,${m.id})">✕</button></div>`;
   }).join('');
 }
 
