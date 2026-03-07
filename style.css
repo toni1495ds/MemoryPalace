@@ -27,9 +27,17 @@ body { background:var(--darker); color:var(--text); font-family:'Inter',sans-ser
   100% { transform:scale(1.05) rotate(2deg); filter:drop-shadow(0 0 30px #ff8c00); }
 }
 #intro h1 {
-  font-family:'Orbitron',monospace; font-size:clamp(20px,4vw,44px); font-weight:900;
-  background:linear-gradient(135deg,var(--gold),var(--ember),var(--fire));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:3px;
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(20px, 4vw, 44px);
+  font-weight: 900;
+
+  background: linear-gradient(135deg, var(--gold), var(--ember), var(--fire));
+
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  letter-spacing: 3px;
 }
 #intro p { color:var(--dim); font-size:14px; max-width:460px; line-height:1.9; }
 .intro-btns { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
