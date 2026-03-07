@@ -1,8 +1,16 @@
 // ════════════════════════════════════════════════
 //  CONFIG & CONSTANTS
 // ════════════════════════════════════════════════
-const BASE_SCALE = 2, GRID = 20, SPEED = 2.2, P_SIZE = 14, INTERACT_D = 38;
-const MAP_W = 1280, MAP_H = 1000;
+const BASE_SCALE = 2, GRID = 20, P_SIZE = 14, INTERACT_D = 38;
+const SPEEDS = [2.2, 5, 10];
+const SPEED_LABELS = ['🐢', '🚶', '🏃'];
+let speedIdx = 0;
+function getSpeed() { return SPEEDS[speedIdx]; }
+function cycleSpeed() {
+  speedIdx = (speedIdx + 1) % SPEEDS.length;
+  document.getElementById('btn-speed').textContent = SPEED_LABELS[speedIdx] + ' ' + SPEEDS[speedIdx];
+}
+const MAP_W = 8000, MAP_H = 6000;
 
 const PALETTE = [
   { bg:'#0d1f3c', wall:'#2050a0', label:'Azul'    },
@@ -355,9 +363,6 @@ function onMove(cx,cy) {
 function onUp(cx,cy) {
   if(panning){
     panning=false; canvas.style.cursor='grab';
-    const S=getScale();
-    player.x=Math.max(0,Math.min(MAP_W,(camX+cw/2)/S));
-    player.y=Math.max(0,Math.min(MAP_H,(camY+ch/2)/S));
     return;
   }
   if(resizingFurniture){ resizingFurniture=null; save(); return; }
@@ -630,23 +635,15 @@ function drawZoomHUD() {
 function updatePlayer() {
   if(openMem||builderMode||quizMode) return;
   let dx=0,dy=0;
-  if(keys['ArrowLeft'] ||dpKeys.left)  dx-=SPEED;
-  if(keys['ArrowRight']||dpKeys.right) dx+=SPEED;
-  if(keys['ArrowUp']   ||dpKeys.up)    dy-=SPEED;
-  if(keys['ArrowDown'] ||dpKeys.down)  dy+=SPEED;
+  if(keys['ArrowLeft'] ||dpKeys.left)  dx-=getSpeed();
+  if(keys['ArrowRight']||dpKeys.right) dx+=getSpeed();
+  if(keys['ArrowUp']   ||dpKeys.up)    dy-=getSpeed();
+  if(keys['ArrowDown'] ||dpKeys.down)  dy+=getSpeed();
 
-  const nx=Math.max(0,Math.min(MAP_W,player.x+dx));
-  const ny=Math.max(0,Math.min(MAP_H,player.y+dy));
-  const inR=roomAt(nx,ny);
-  if(inR){ player.x=nx; player.y=ny; curRoomName=inR.name; }
-  else {
-    if(roomAt(nx,player.y)) player.x=nx;
-    if(roomAt(player.x,ny)) player.y=ny;
-    const cr=roomAt(player.x,player.y); if(cr){ curRoomName=cr.name; }
-  }
-
+  player.x=Math.max(0,Math.min(MAP_W,player.x+dx));
+  player.y=Math.max(0,Math.min(MAP_H,player.y+dy));
   // Auto-zoom when entering a new room
-  const cr=roomAt(player.x,player.y);
+  const cr=roomAt(player.x,player.y); if(cr) curRoomName=cr.name;
   const newRid=cr?cr.id:null;
   if(newRid!==prevRoomId){
     prevRoomId=newRid;
@@ -672,7 +669,7 @@ function updateCamera() {
 }
 
 function updateBuilderCamera() {
-  const S=getScale(), step=SPEED*3.5;
+  const S=getScale(), step=getSpeed()*3.5;
   let dx=0, dy=0;
   if(keys['ArrowLeft'] ||dpKeys.left)  dx-=step;
   if(keys['ArrowRight']||dpKeys.right) dx+=step;

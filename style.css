@@ -18,10 +18,60 @@ body { background:var(--darker); color:var(--text); font-family:'Inter',sans-ser
 
 /* ── INTRO ── */
 #intro {
-  background:radial-gradient(ellipse at 50% 40%,#0d1f3c 0%,#060810 70%);
+  background:
+    radial-gradient(ellipse at 50% 110%, rgba(255,80,0,.55) 0%, transparent 55%),
+    radial-gradient(ellipse at 20% 80%,  rgba(255,140,0,.18) 0%, transparent 40%),
+    radial-gradient(ellipse at 80% 75%,  rgba(255,60,0,.14)  0%, transparent 38%),
+    radial-gradient(ellipse at 50% 38%,  rgba(80,180,255,.10) 0%, transparent 60%),
+    linear-gradient(170deg, #05101e 0%, #080518 40%, #0a0408 100%);
   flex-direction:column; gap:26px; text-align:center; padding:40px;
+  overflow:hidden;
 }
-.fire-icon { font-size:72px; animation:flicker 1.5s ease-in-out infinite alternate; filter:drop-shadow(0 0 20px var(--fire)); }
+#intro::before {
+  content:'';
+  position:absolute; inset:0; pointer-events:none;
+  background:
+    repeating-linear-gradient(
+      60deg,
+      transparent,
+      transparent 120px,
+      rgba(80,200,255,.025) 120px,
+      rgba(80,200,255,.025) 121px
+    ),
+    repeating-linear-gradient(
+      -60deg,
+      transparent,
+      transparent 120px,
+      rgba(80,200,255,.025) 120px,
+      rgba(80,200,255,.025) 121px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 120px,
+      rgba(80,200,255,.018) 120px,
+      rgba(80,200,255,.018) 121px
+    );
+  animation: crystalShift 18s linear infinite;
+}
+#intro::after {
+  content:'';
+  position:absolute; bottom:-60px; left:50%; transform:translateX(-50%);
+  width:700px; height:180px; pointer-events:none;
+  background:radial-gradient(ellipse, rgba(255,100,0,.45) 0%, transparent 70%);
+  animation: emberPulse 3s ease-in-out infinite alternate;
+  filter:blur(18px);
+}
+@keyframes crystalShift {
+  0%   { background-position: 0 0, 0 0, 0 0; }
+  100% { background-position: 240px 416px, -240px 416px, 0 240px; }
+}
+@keyframes emberPulse {
+  0%   { opacity:.7; transform:translateX(-50%) scaleX(1); }
+  100% { opacity:1;  transform:translateX(-50%) scaleX(1.15); }
+}
+.fire-icon { font-size:72px; animation:flicker 1.5s ease-in-out infinite alternate; filter:drop-shadow(0 0 20px var(--fire)); position:relative; z-index:1; }
+#intro h1, #intro p, .intro-btns { position:relative; z-index:1; }
 @keyframes flicker {
   0%   { transform:scale(1) rotate(-2deg); }
   100% { transform:scale(1.05) rotate(2deg); filter:drop-shadow(0 0 30px #ff8c00); }
